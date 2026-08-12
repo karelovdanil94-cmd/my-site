@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кибер Сфера Эволюции</title>
+    <title>Кибер Сфера Кликер</title>
     <style>
         body { font-family: sans-serif; background: #0a0f1d; color: #fff; margin: 0; padding: 20px; user-select: none; }
         .main-box { background: #111827; max-width: 500px; margin: 0 auto 20px auto; padding: 20px; border-radius: 16px; border: 2px solid #00f6ff; text-align: center; box-shadow: 0 0 15px rgba(0,246,255,0.2); }
         .money { font-size: 40px; font-weight: bold; color: #00f6ff; margin: 10px 0; }
         .sphere { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(#00f6ff, #7303c0); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 20px #00f6ff; transition: transform 0.05s; }
         .sphere:active { transform: scale(0.93); }
-        .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 1450px; margin: 0 auto; }
-        .col { background: #1f2937; padding: 15px; border-radius: 12px; border: 1px solid #374151; max-height: 55vh; overflow-y: auto; }
+        .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .col { background: #1f2937; padding: 15px; border-radius: 12px; border: 1px solid #374151; }
         .col h3 { margin-top: 0; border-bottom: 2px solid #374151; padding-bottom: 5px; }
-        .card { background: rgba(255,255,255,0.05); margin: 8px 0; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; text-align: left; }
+        .card { background: rgba(255,255,255,0.05); margin: 8px 0; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .btn { background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn:disabled { background: #4b5563; color: #9ca3af; cursor: not-allowed; }
         .action-btn { background: #10b981; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 5px; }
-        .dev-card { background: rgba(0, 246, 255, 0.05); border: 1px dashed #00f6ff; padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: left; font-size: 14px; }
-        .dev-link { color: #00f6ff; text-decoration: none; font-weight: bold; display: block; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -36,68 +34,107 @@
     <div class="columns">
         <div class="col" style="border-top: 3px solid #00f6ff;">
             <h3 style="color:#00f6ff;">⚡ Апгрейды клика</h3>
-            <div class="card"><span><b>Дата-кабель (+1)</b><br><span id="u_c_0">10</span> 💰</span><button class="btn" id="u_b_0" onclick="buy('u',0,1)">Купить</button></div>
-            <div class="card"><span><b>Микрочип (+2)</b><br><span id="u_c_1">50</span> 💰</span><button class="btn" id="u_b_1" onclick="buy('u',1,2)">Купить</button></div>
-            <div class="card"><span><b>Модуль ОЗУ (+3)</b><br><span id="u_c_2">250</span> 💰</span><button class="btn" id="u_b_2" onclick="buy('u',2,3)">Купить</button></div>
-            <div class="card"><span><b>Процессор (+4)</b><br><span id="u_c_3">1000</span> 💰</span><button class="btn" id="u_b_3" onclick="buy('u',3,4)">Купить</button></div>
-            <div class="card"><span><b>Видеокарта (+5)</b><br><span id="u_c_4">4000</span> 💰</span><button class="btn" id="u_b_4" onclick="buy('u',4,5)">Купить</button></div>
+            <div id="t1"></div>
         </div>
-
         <div class="col" style="border-top: 3px solid #ec38bc;">
             <h3 style="color:#ec38bc;">🤖 Роботы (Авто)</h3>
-            <div class="card"><span><b>Бот-Дрон (+2/с)</b><br><span id="p_c_0">20</span> 💰</span><button class="btn" id="p_b_0" onclick="buy('r',0,2)">Купить</button></div>
-            <div class="card"><span><b>Майнер (+4/с)</b><br><span id="p_c_1">150</span> 💰</span><button class="btn" id="p_b_1" onclick="buy('r',1,4)">Купить</button></div>
-            <div class="card"><span><b>ИИ-Ассистент (+6/с)</b><br><span id="p_c_2">600</span> 💰</span><button class="btn" id="p_b_2" onclick="buy('r',2,6)">Купить</button></div>
-            <div class="card"><span><b>Серверная (+8/с)</b><br><span id="p_c_3">2500</span> 💰</span><button class="btn" id="p_b_3" onclick="buy('r',3,8)">Купить</button></div>
-            <div class="card"><span><b>Генератор (+10/с)</b><br><span id="p_c_4">10000</span> 💰</span><button class="btn" id="p_b_4" onclick="buy('r',4,10)">Купить</button></div>
+            <div id="t2"></div>
         </div>
-
         <div class="col" style="border-top: 3px solid #f59e0b;">
             <h3 style="color:#f59e0b;">🎨 Скины сферы</h3>
-            <div class="card"><span><b>🟢 Изумруд</b><br>100 💰</span><button class="btn" id="s_b_0" onclick="buySkin(0,100,'🟢','#047857')">Купить</button></div>
-            <div class="card"><span><b>👑 Золото</b><br>300 💰</span><button class="btn" id="s_b_1" onclick="buySkin(1,300,'👑','#b45309')">Купить</button></div>
-            <div class="card"><span><b>🔥 Магма</b><br>1000 💰</span><button class="btn" id="s_b_2" onclick="buySkin(2,1000,'🔥','linear-gradient(#f97316,#b91c1c)')">Купить</button></div>
-            <div class="card"><span><b>❄️ Лёд</b><br>5000 💰</span><button class="btn" id="s_b_3" onclick="buySkin(3,5000,'❄️','linear-gradient(#06b6d4,#1d4ed8)')">Купить</button></div>
-            <div class="card"><span><b>🌌 Космос</b><br>12000 💰</span><button class="btn" id="s_b_4" onclick="buySkin(4,12000,'🌌','#03001e')">Купить</button></div>
-        </div>
-        
-        <div class="col" style="border-top: 3px solid #10b981;">
-            <h3 style="color:#10b981;">👨‍💻 Разработчики</h3>
-            <div class="dev-card"><b>Главный Создатель:</b><div>WETHB1</div><a href="https://t.me" target="_blank" class="dev-link">➡️ Написать в Telegram</a></div>
-            <div class="dev-card"><b>Технический отдел:</b><div>Cyber Bot ИИ</div><span style="font-size:12px; color:#9ca3af;">Автоматическая сборка</span></div>
+            <div id="t3"></div>
         </div>
     </div>
 
+    <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
+
     <script>
-        let coins = Number(localStorage.getItem('v_c')) || 0, clickPower = Number(localStorage.getItem('v_p')) || 1, autoIncome = Number(localStorage.getItem('v_a')) || 0;
-        let lvl = Number(localStorage.getItem('v_l')) || 1, reb = Number(localStorage.getItem('v_r')) || 0, clks = Number(localStorage.getItem('v_k')) || 0;
-        let curSkin = localStorage.getItem('v_se') || '⭐', curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
-        let uPrices = JSON.parse(localStorage.getItem('v_pu')) ||, rPrices = JSON.parse(localStorage.getItem('v_pp')) ||, ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
+        const upgData = [
+            {n:"Дата-кабель",v:1,c:10},{n:"Микрочип",v:3,c:50},{n:"Модуль ОЗУ",v:8,c:250},{n:"Процессор",v:25,c:1000},{n:"Видеокарта",v:70,c:4000}
+        ];
+        const petData = [
+            {n:"Бот-Дрон",v:1,c:20},{n:"Майнер",v:5,c:150},{n:"ИИ-Ассистент",v:15,c:600},{n:"Серверная станция",v:50,c:2500},{n:"Ядерный генератор",v:150,c:10000}
+        ];
+        const skinData = [
+            {n:"Изумруд",e:"🟢",b:"#047857",c:100},{n:"Золото",e:"👑",b:"#b45309",c:300},{n:"Магма",e:"🔥",b:"linear-gradient(#f97316,#b91c1c)",c:1000},{n:"Лёд",e:"❄️",b:"linear-gradient(#06b6d4,#1d4ed8)",c:5000},{n:"Космос",e:"🌌",b:"#03001e",c:20000}
+        ];
+
+        let coins = Number(localStorage.getItem('v_c')) || 0;
+        let clickPower = Number(localStorage.getItem('v_p')) || 1;
+        let autoIncome = Number(localStorage.getItem('v_a')) || 0;
+        let lvl = Number(localStorage.getItem('v_l')) || 1;
+        let reb = Number(localStorage.getItem('v_r')) || 0;
+        let clks = Number(localStorage.getItem('v_k')) || 0;
+        let curSkin = localStorage.getItem('v_se') || '⭐';
+        let curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
+
+        let upgPrices = JSON.parse(localStorage.getItem('v_pu')) || upgData.map(i=>i.c);
+        let petPrices = JSON.parse(localStorage.getItem('v_pp')) || petData.map(i=>i.c);
+        let ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
+
+        function buildShops() {
+            let h1 = ''; upgData.forEach((item, i) => { h1 += `<div class="card"><span><b>${item.n}</b> (+${item.v})<br><span id="u_c_${i}">${upgPrices[i]}</span> 💰</span><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${item.v})">Купить</button></div>`; });
+            document.getElementById('t1').innerHTML = h1;
+            let h2 = ''; petData.forEach((item, i) => { h2 += `<div class="card"><span><b>${item.n}</b> (+${item.v}/с)<br><span id="p_c_${i}">${petPrices[i]}</span> 💰</span><button class="btn" id="p_b_${i}" onclick="buy('p',${i},${item.v})">Купить</button></div>`; });
+            document.getElementById('t2').innerHTML = h2;
+            let h3 = ''; skinData.forEach((item, i) => { h3 += `<div class="card"><span><b>${item.n}</b> [${item.e}]<br>${item.c} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
+            document.getElementById('t3').innerHTML = h3;
+        }
 
         function tClick() {
             coins += clickPower * (reb > 0 ? reb * 2 : 1); clks++;
             if (clks >= lvl * 50) { lvl++; clks = 0; clickPower += 2; alert("🎉 Уровень повышен!"); }
             save(); ui();
         }
-        function buy(t, i, v) {
-            let a = t === 'u' ? uPrices : rPrices;
-            if (coins >= a[i]) { coins -= a[i]; if (t === 'u') clickPower += v; else autoIncome += v; a[i] = Math.floor(a[i] * 1.5); save(); ui(); }
+
+        function buy(type, i, val) {
+            let arr = type === 'u' ? upgPrices : petPrices;
+            if (coins >= arr[i]) {
+                coins -= arr[i];
+                if (type === 'u') clickPower += val; else autoIncome += val;
+                arr[i] = Math.floor(arr[i] * 1.5);
+                save(); ui();
+            }
         }
-        function buySkin(i, cost, emo, bg) {
-            if (ownedSkins.includes(i)) { curSkin = emo; curBg = bg; applySkin(); save(); return; }
-            if (coins >= cost) { coins -= cost; ownedSkins.push(i); curSkin = emo; curBg = bg; applySkin(); save(); ui(); }
+
+        function buySkin(i) {
+            let s = skinData[i];
+            if (ownedSkins.includes(i)) { curSkin = s.e; curBg = s.b; applySkin(); save(); return; }
+            if (coins >= s.c) { coins -= s.c; ownedSkins.push(i); curSkin = s.e; curBg = s.b; applySkin(); save(); ui(); }
         }
-        function applySkin() { let c = document.getElementById('core'); if(c) { c.innerText = curSkin; c.style.background = curBg; } }
-        function doReb() { if (coins >= 10000) { reb++; coins = 0; clickPower = 1; autoIncome = 0; lvl = 1; clks = 0; uPrices =; rPrices =; save(); ui(); alert("✨ Перерождение!"); } }
-        function save() { localStorage.setItem('v_c', coins); localStorage.setItem('v_p', clickPower); localStorage.setItem('v_a', autoIncome); localStorage.setItem('v_l', lvl); localStorage.setItem('v_r', reb); localStorage.setItem('v_k', clks); localStorage.setItem('v_se', curSkin); localStorage.setItem('v_sb', curBg); localStorage.setItem('v_pu', JSON.stringify(uPrices)); localStorage.setItem('v_pp', JSON.stringify(rPrices)); localStorage.setItem('v_so', JSON.stringify(ownedSkins)); }
+
+        function applySkin() { let c = document.getElementById('core'); c.innerText = curSkin; c.style.background = curBg; }
+
+        function doReb() {
+            if (coins >= 10000) {
+                reb++; coins = 0; clickPower = 1; autoIncome = 0; lvl = 1; clks = 0;
+                upgPrices = upgData.map(i=>i.c); petPrices = petData.map(i=>i.c);
+                save(); ui(); alert("✨ Перерождение выполнено!");
+            }
+        }
+
+        function save() {
+            localStorage.setItem('v_c', coins); localStorage.setItem('v_p', clickPower); localStorage.setItem('v_a', autoIncome);
+            localStorage.setItem('v_l', lvl); localStorage.setItem('v_r', reb); localStorage.setItem('v_k', clks);
+            localStorage.setItem('v_se', curSkin); localStorage.setItem('v_sb', curBg);
+            localStorage.setItem('v_pu', JSON.stringify(upgPrices)); localStorage.setItem('v_pp', JSON.stringify(petPrices));
+            localStorage.setItem('v_so', JSON.stringify(ownedSkins));
+        }
+
         function resetG() { localStorage.clear(); location.reload(); }
+
         function ui() {
-            document.getElementById('bal').innerText = coins; document.getElementById('clk').innerText = clickPower * (reb > 0 ? reb * 2 : 1); document.getElementById('cps').innerText = autoIncome; document.getElementById('lvl').innerText = lvl; document.getElementById('reb').innerText = reb; document.getElementById('rBtn').disabled = (coins < 10000);
-            for(let i=0; i<5; i++) {
-                if(document.getElementById(`u_b_${i}`)) document.getElementById(`u_b_${i}`).disabled = (coins < uPrices[i]);
-                if(document.getElementById(`u_c_${i}`)) document.getElementById(`u_c_${i}`).innerText = uPrices[i];
-                if(document.getElementById(`p_b_${i}`)) document.getElementById(`p_b_${i}`).disabled = (coins < rPrices[i]);
-                if(document.getElementById(`p_c_${i}`)) document.getElementById(`p_c_${i}`).innerText = rPrices[i];
-                let bs = document.getElementById(`s_b_${i}`);
-                if (bs) {
-                    if (ownedSkins.includes(i)) { bs.innerText = "Надеть"; bs.style.background = "#10b981"; }
+            document.getElementById('bal').innerText = coins; document.getElementById('clk').innerText = clickPower * (reb > 0 ? reb * 2 : 1);
+            document.getElementById('cps').innerText = autoIncome; document.getElementById('lvl').innerText = lvl; document.getElementById('reb').innerText = reb;
+            document.getElementById('rBtn').disabled = (coins < 10000);
+            upgPrices.forEach((p, i) => { let b = document.getElementById(`u_b_${i}`); if(b){ b.disabled = (coins<p); document.getElementById(`u_c_${i}`).innerText = p; } });
+            petPrices.forEach((p, i) => { let b = document.getElementById(`p_b_${i}`); if(b){ b.disabled = (coins<p); document.getElementById(`p_c_${i}`).innerText = p; } });
+            skinData.forEach((s, i) => { let b = document.getElementById(`s_b_${i}`); if(b){ if(ownedSkins.includes(i)){ b.innerText="Надеть"; b.style.background="#10b981"; } else b.disabled=(coins<s.c); } });
+        }
+
+        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; save(); ui(); } }, 1000);
+
+        buildShops(); applySkin(); ui();
+    </script>
+</body>
+</html>
