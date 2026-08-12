@@ -9,12 +9,12 @@
         .layout { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1000px; margin: 0 auto; justify-content: center; }
         .panel { background: rgba(30, 41, 59, 0.4); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); min-width: 300px; }
         .money { font-size: 45px; font-weight: bold; color: #38bdf8; margin: 10px 0; }
-        .sphere { width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(#ec4899, #8b5cf6); margin: 20px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 0 30px rgba(139,92,246,0.5); }
+        .sphere { width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(#ec4899, #8b5cf6); margin: 20px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 0 30px rgba(139,92,246,0.5); transition: transform 0.05s; }
         .sphere:active { transform: scale(0.93); }
         .card { background: rgba(255,255,255,0.03); margin: 8px 0; padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
         .btn { background: #2563eb; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
-        .idea-btn { background: #10b981; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 15px; }
+        .reset-btn { background: #e11d48; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -27,7 +27,7 @@
             <div class="money"><span id="coinBalance">0</span> 💰</div>
             <div style="font-size:13px; color:#94a3b8;">Клик: +<span id="statClick">1</span> | Авто: +<span id="statSec">0</span>/с</div>
             <div id="mainCore" class="sphere" onclick="triggerClick()">⭐</div>
-            <button class="idea-btn" onclick="sendIdeaToBot()">💡 Предложить идею</button>
+            <button class="reset-btn" onclick="resetGame()">Сбросить прогресс</button>
         </div>
 
         <div class="panel" style="flex: 1.5; text-align: left;">
@@ -42,20 +42,27 @@
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
     <script>
-        // НАСТРОЙКА ВАШЕГО ТЕЛЕГРАМ-БОТА
-        const BOT_TOKEN = "8737325629:AAHoOX2lz1kFAglMvXNZ0-XyUiBYh47PU_k";
-        const ADMIN_ID = "8991645508";
-
-        let coins = 0, clickPower = 1, autoIncome = 0, totalClicks = 0, currentLvl = 1, nextLvlClicks = 50;
-        let prices = { u1: 15, a1: 40 };
-        let ownedSkins = [];
+        // Загрузка данных или создание новых
+        let coins = Number(localStorage.getItem('c_coins')) || 0;
+        let clickPower = Number(localStorage.getItem('c_power')) || 1;
+        let autoIncome = Number(localStorage.getItem('c_auto')) || 0;
+        let totalClicks = Number(localStorage.getItem('c_clicks')) || 0;
+        let currentLvl = Number(localStorage.getItem('c_lvl')) || 1;
+        let nextLvlClicks = Number(localStorage.getItem('c_next')) || 50;
+        
+        let prices = JSON.parse(localStorage.getItem('c_prices')) || { u1: 15, a1: 40 };
+        let ownedSkins = JSON.parse(localStorage.getItem('c_skins')) || [];
 
         function triggerClick() {
-            coins += clickPower; totalClicks++;
+            coins += clickPower;
+            totalClicks++;
             if (totalClicks >= nextLvlClicks) {
-                currentLvl++; nextLvlClicks = Math.floor(nextLvlClicks * 2.5); clickPower += 2;
-                alert("🎉 Уровень повышен! Ваш уровень: " + currentLvl);
+                currentLvl++;
+                nextLvlClicks = Math.floor(nextLvlClicks * 2.5);
+                clickPower += 2;
+                alert("🎉 Уровень повышен! Новый уровень: " + currentLvl);
             }
+            saveGame();
             refreshInterface();
         }
 
@@ -65,31 +72,46 @@
                 if (type === 'click') clickPower += value;
                 else autoIncome += value;
                 prices[id] = Math.floor(prices[id] * 1.5);
-                document.getElementById('btn' + id.toUpperCase()).innerText = prices[id] + " 💰";
+                saveGame();
                 refreshInterface();
             }
         }
 
         function activateSkin(skinId, cost, emojiText, backgroundStyle) {
-            let btn = document.getElementById('btnS' + skinId);
+            let btn = document.getElementById('btnS1');
             if (ownedSkins.includes(skinId)) {
                 document.getElementById('mainCore').innerText = emojiText;
                 document.getElementById('mainCore').style.background = backgroundStyle;
                 return;
             }
             if (coins >= cost) {
-                coins -= cost; ownedSkins.push(skinId); btn.innerText = "Надеть"; btn.style.background = "#10b981";
-                document.getElementById('mainCore').innerText = emojiText; document.getElementById('mainCore').style.background = backgroundStyle;
+                coins -= cost;
+                ownedSkins.push(skinId);
+                btn.innerText = "Надеть";
+                btn.style.background = "#10b981";
+                document.getElementById('mainCore').innerText = emojiText;
+                document.getElementById('mainCore').style.background = backgroundStyle;
+                saveGame();
                 refreshInterface();
             }
         }
 
-        function sendIdeaToBot() {
-            let idea = prompt("Какую фишку добавить в игру?");
-            if (!idea) return;
-            let text = "💡 Новая идея!\n\n" + idea;
-            let url = "https://telegram.org" + BOT_TOKEN + "/sendMessage?chat_id=" + ADMIN_ID + "&text=" + encodeURIComponent(text);
-            fetch(url).then(res => { if(res.ok) alert("Успешно отправлено в Telegram!"); }).catch(e => alert("Ошибка сети"));
+        function saveGame() {
+            localStorage.setItem('c_coins', coins);
+            localStorage.setItem('c_power', clickPower);
+            localStorage.setItem('c_auto', autoIncome);
+            localStorage.setItem('c_clicks', totalClicks);
+            localStorage.setItem('c_lvl', currentLvl);
+            localStorage.setItem('c_next', nextLvlClicks);
+            localStorage.setItem('c_prices', JSON.stringify(prices));
+            localStorage.setItem('c_skins', JSON.stringify(ownedSkins));
+        }
+
+        function resetGame() {
+            if (confirm("Вы точно хотите сбросить весь прогресс?")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
 
         function refreshInterface() {
@@ -97,14 +119,40 @@
             document.getElementById('statClick').innerText = clickPower;
             document.getElementById('statSec').innerText = autoIncome;
             document.getElementById('playerLvl').innerText = currentLvl;
-            for (let key in prices) {
-                let btn = document.getElementById('btn' + key.toUpperCase());
-                if (btn) btn.disabled = (coins < prices[key]);
+            
+            document.getElementById('btnU1').innerText = prices.u1 + " 💰";
+            document.getElementById('btnA1').innerText = prices.a1 + " 💰";
+            
+            document.getElementById('btnU1').disabled = (coins < prices.u1);
+            document.getElementById('btnA1').disabled = (coins < prices.a1);
+            
+            let btnS = document.getElementById('btnS1');
+            if (ownedSkins.includes(1)) {
+                btnS.innerText = "Надеть";
+                btnS.style.background = "#10b981";
+                btnS.disabled = false;
+            } else {
+                btnS.disabled = (coins < 200);
             }
         }
 
-        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; refreshInterface(); } }, 1000);
+        // Авто-клик каждую секунду
+        setInterval(function() {
+            if (autoIncome > 0) {
+                coins += autoIncome;
+                saveGame();
+                refreshInterface();
+            }
+        }, 1000);
+
+        // Проверяем надетый скин при загрузке
+        if (ownedSkins.includes(1)) {
+            document.getElementById('mainCore').innerText = '🔥';
+            document.getElementById('mainCore').style.background = 'radial-gradient(#f97316,#b91c1c)';
+        }
+
         refreshInterface();
     </script>
 </body>
 </html>
+
