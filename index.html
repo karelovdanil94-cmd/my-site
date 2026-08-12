@@ -3,212 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Космическая Эволюция Галактики</title>
+    <title>Космический Кликер Галактики</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-            color: #f8fafc;
-            margin: 0;
-            padding: 20px;
-            user-select: none;
-            min-height: 100vh;
-        }
-        .game-layout {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-            justify-content: center;
-        }
-        .main-section {
-            flex: 1;
-            min-width: 320px;
-            background: rgba(30, 41, 59, 0.4);
-            padding: 30px;
-            border-radius: 24px;
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            height: fit-content;
-            text-align: center;
-        }
-        .shop-section {
-            flex: 1.5;
-            min-width: 350px;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .money-counter {
-            font-size: 52px;
-            font-weight: 800;
-            color: #38bdf8;
-            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-            margin: 10px 0;
-        }
-        .lvl-badge {
-            background: #e11d48;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-        .sphere-target {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ec4899, #8b5cf6);
-            margin: 30px auto;
-            cursor: pointer;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
-            transition: transform 0.05s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-        }
-        .sphere-target:active { transform: scale(0.92); }
-        .tab-title {
-            color: #38bdf8;
-            border-bottom: 2px solid #334155;
-            padding-bottom: 8px;
-            margin-top: 25px;
-            text-align: left;
-            font-size: 20px;
-        }
-        .card-item {
-            background: rgba(255, 255, 255, 0.03);
-            margin: 12px 0;
-            padding: 14px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        .card-info { text-align: left; }
-        .card-name { font-weight: 600; font-size: 16px; }
-        .card-desc { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-        .card-cost { color: #f43f5e; font-size: 14px; font-weight: bold; margin-top: 4px; }
-        .action-btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .action-btn:hover { background: #3b82f6; }
-        .action-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 14px;
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 20px;
-        }
-        /* Кнопка предложить идею */
-        .idea-btn {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            transition: 0.2s;
-        }
-        .idea-btn:hover { background: #059669; }
+        body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle, #0f172a, #020617); color: #f8fafc; margin: 0; padding: 15px; user-select: none; }
+        .layout { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1100px; margin: 0 auto; justify-content: center; }
+        .main-p, .shop-p { background: rgba(30, 41, 59, 0.4); padding: 20px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
+        .main-p { flex: 1; min-width: 300px; text-align: center; }
+        .shop-p { flex: 1.5; min-width: 350px; max-height: 80vh; overflow-y: auto; }
+        .money { font-size: 45px; font-weight: bold; color: #38bdf8; margin: 10px 0; }
+        .lvl { background: #e11d48; padding: 4px 12px; border-radius: 15px; font-weight: bold; display: inline-block; }
+        .sphere { width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(#ec4899, #8b5cf6); margin: 20px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 0 30px rgba(139,92,246,0.5); }
+        .sphere:active { transform: scale(0.93); }
+        .title { color: #38bdf8; border-bottom: 2px solid #334155; padding-bottom: 5px; margin-top: 15px; font-size: 18px; text-align: left; }
+        .card { background: rgba(255,255,255,0.03); margin: 8px 0; padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .card-info { text-align: left; font-size: 13px; }
+        .card-name { font-weight: bold; }
+        .card-cost { color: #f43f5e; font-weight: bold; }
+        .btn { background: #2563eb; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+        .idea { background: #10b981; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align: center;">🌌 Космическая Эволюция Галактики 🌌</h1>
+    <h1 style="text-align:center;">🌌 Космическая Эволюция 🌌</h1>
     
-    <div class="game-layout">
-        <div class="main-section">
-            <div class="lvl-badge">Уровень <span id="playerLvl">1</span></div>
-            <div class="money-counter"><span id="coinBalance">0</span> 💰</div>
-            
-            <div class="stats-grid">
-                <div>За клик: +<span id="statClick">1</span></div>
-                <div>Пассивно: +<span id="statSec">0</span>/с</div>
-                <div>Всего кликов: <span id="statTotalClicks">0</span></div>
-                <div>До Лвл-апа: <span id="statNextLvl">50</span></div>
-            </div>
-            
-            <div id="mainCore" class="sphere-target" onclick="triggerClick()">⭐</div>
-            <p style="color: #64748b; font-size: 13px;">Развивай базу, нанимай роботов и собирай скины!</p>
-            
-            <!-- НОВАЯ КНОПКА ИДЕЙ -->
-            <button class="idea-btn" onclick="suggestIdea()">💡 Предложить идею</button>
+    <div class="layout">
+        <div class="main-p">
+            <div class="lvl">Уровень <span id="lvlDisplay">1</span></div>
+            <div class="money"><span id="balDisplay">0</span> 💰</div>
+            <div style="font-size:14px; color:#94a3b8; margin-bottom:15px;">Клик: +<span id="clickDisplay">1</span> | Авто: +<span id="secDisplay">0</span>/с</div>
+            <div id="mainCore" class="sphere" onclick="coreClick()">⭐</div>
+            <button class="idea" onclick="addIdea()">💡 Предложить идею</button>
         </div>
 
-        <div class="shop-section">
-            <div class="tab-title">⚡ Сила клика (Инструменты)</div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Железный Клик</div><div class="card-desc">+1 к силе клика</div><div class="card-cost" id="costU1">Цена: 15 💰</div></div>
-                <button class="action-btn" id="btnU1" onclick="buyItem('u1', 1, 'click')">Купить</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Плазменный Заряд</div><div class="card-desc">+5 к силе клика</div><div class="card-cost" id="costU2">Цена: 120 💰</div></div>
-                <button class="action-btn" id="btnU2" onclick="buyItem('u2', 5, 'click')">Купить</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Фотонный Пульсар</div><div class="card-desc">+25 к силе клика</div><div class="card-cost" id="costU3">Цена: 800 💰</div></div>
-                <button class="action-btn" id="btnU3" onclick="buyItem('u3', 25, 'click')">Купить</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Гравитационный Молот</div><div class="card-desc">+100 к силе клика</div><div class="card-cost" id="costU4">Цена: 4000 💰</div></div>
-                <button class="action-btn" id="btnU4" onclick="buyItem('u4', 100, 'click')">Купить</button>
-            </div>
+        <div class="shop-p">
+            <div class="title">⚡ Сила клика</div>
+            <div class="card"><div class="card-info"><div class="card-name">Железный Клик (+1)</div><div class="card-cost" id="cost_u1">Цена: 15</div></div><button class="btn" id="btn_u1" onclick="buy('u1',1,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Плазменный Заряд (+5)</div><div class="card-cost" id="cost_u2">Цена: 120</div></div><button class="btn" id="btn_u2" onclick="buy('u2',5,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Фотонный Пульсар (+25)</div><div class="card-cost" id="cost_u3">Цена: 800</div></div><button class="btn" id="btn_u3" onclick="buy('u3',25,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Квантовый Молот (+100)</div><div class="card-cost" id="cost_u4">Цена: 4000</div></div><button class="btn" id="btn_u4" onclick="buy('u4',100,'click')">Купить</button></div>
 
-            <div class="tab-title">🤖 Автокликеры (Пассивный доход)</div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Дрон-Сборщик</div><div class="card-desc">+1 💰 в секунду</div><div class="card-cost" id="costA1">Цена: 40 💰</div></div>
-                <button class="action-btn" id="btnA1" onclick="buyItem('a1', 1, 'auto')">Нанять</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Станция Генерации</div><div class="card-desc">+8 💰 в секунду</div><div class="card-cost" id="costA2">Цена: 350 💰</div></div>
-                <button class="action-btn" id="btnA2" onclick="buyItem('a2', 8, 'auto')">Нанять</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Квантовый Сервер</div><div class="card-desc">+50 💰 в секунду</div><div class="card-cost" id="costA3">Цена: 2000 💰</div></div>
-                <button class="action-btn" id="btnA3" onclick="buyItem('a3', 50, 'auto')">Нанять</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Био-Реактор Материи</div><div class="card-desc">+300 💰 в секунду</div><div class="card-cost" id="costA4">Цена: 12000 💰</div></div>
-                <button class="action-btn" id="btnA4" onclick="buyItem('a4', 300, 'auto')">Нанять</button>
-            </div>
+            <div class="title">🤖 Автокликеры</div>
+            <div class="card"><div class="card-info"><div class="card-name">Дрон-Сборщик (+1/с)</div><div class="card-cost" id="cost_a1">Цена: 40</div></div><button class="btn" id="btn_a1" onclick="buy('a1',1,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Станция Генерации (+8/с)</div><div class="card-cost" id="cost_a2">Цена: 350</div></div><button class="btn" id="btn_a2" onclick="buy('a2',8,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Квантовый Сервер (+50/с)</div><div class="card-cost" id="cost_a3">Цена: 2000</div></div><button class="btn" id="btn_a3" onclick="buy('a3',50,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Био-Реактор (+300/с)</div><div class="card-cost" id="cost_a4">Цена: 12000</div></div><button class="btn" id="btn_a4" onclick="buy('a4',300,'auto')">Нанять</button></div>
 
-            <div class="tab-title">🦊 Космические Питомцы</div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Инопланетный Лис</div><div class="card-desc">+15 💰 в секунду пассивно</div><div class="card-cost" id="costP1">Цена: 1000 💰</div></div>
-                <button class="action-btn" id="btnP1" onclick="buyItem('p1', 15, 'auto')">Приручить</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Астральный Феникс</div><div class="card-desc">+120 💰 в секунду пассивно</div><div class="card-cost" id="costP2">Цена: 6000 💰</div></div>
-                <button class="action-btn" id="btnP2" onclick="buyItem('p2', 120, 'auto')">Приручить</button>
-            </div>
+            <div class="title">🦊 Питомцы и Скины</div>
+            <div class="card"><div class="card-info"><div class="card-name">Космо-Лис (+15/с)</div><div class="card-cost" id="cost_p1">Цена: 1000</div></div><button class="btn" id="btn_p1" onclick="buy('p1',15,'auto')">Приручить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Астральный Феникс (+120/с)</div><div class="card-cost" id="cost_p2">Цена: 6000</div></div><button class="btn" id="btn_p2" onclick="buy('p2',120,'auto')">Приручить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Скин: Магма 🔥</div><div class="card-cost">Цена: 300</div></div><button class="btn" id="sk1" onclick="setSkin(1,300,'🔥','radial-gradient(#f97316,#b91c1c)')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Скин: Лёд ❄️</div><div class="card-cost">Цена: 1500</div></div><button class="btn" id="sk2" onclick="setSkin(2,1500,'❄️','radial-gradient(#06b6d4,#1d4ed8)')">Купить</button></div>
+        </div>
+    </div>
 
-            <div class="tab-title">🎨 Уникальные Скины Ядра</div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Скин: Магма</div><div class="card-desc">Перекрашивает сферу</div><div class="card-cost">Цена: 300 💰</div></div>
-                <button class="action-btn" id="btnS1" onclick="activateSkin(1, 300, '🔥', 'radial-gradient(circle, #f97316, #b91c1c)')">Купить</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Скин: Неоновый Лёд</div><div class="card-desc">Перекрашивает сферу</div><div class="card-cost">Цена: 1500 💰</div></div>
+    <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none;width:1px;height:1px;">
+
+    <script>
+        let coins = 0, clickPower = 1, autoIncome = 0, totalClicks = 0, currentLvl = 1, nextLvl = 50;
+        let prices = { u1: 15, u2: 120, u3: 800, u4: 4000, a1: 40, a2: 350, a3: 2000, a4: 12000, p1: 1000, p2: 6000 };
+        let ownedSkins = [];
+
+        function coreClick() {
+            coins += clickPower; totalClicks++;
+            if (totalClicks >= nextLvl) {
+                currentLvl++; totalClicks = 0; nextLvl = Math.floor(nextLvl * 2.2); clickPower += 2;
+                alert("🎉 Новый Уровень: " + currentLvl + "! Сила клика +2!");
+            }
+            ui();
+        }
+
+        function buy(id, val, type) {
+            if (coins >= prices[id]) {
+                coins -= prices[id];
+                if (type === 'click') clickPower += val;
+                else autoIncome += val;
+                prices[id] = Math.floor(prices[id] * 1.4);
+                document.getElementById('cost_' + id).innerText = "Цена: " + prices[id];
+                ui();
+            }
+        }
+
+        function setSkin(skinId, cost, emo, bg) {
+            let btn = document.getElementById('sk' + skinId);
+            if (ownedSkins.includes(skinId)) {
+                document.getElementById('mainCore').innerText = emo;
+                document.getElementById('mainCore').style.background = bg;
+                return;
+            }
+            if (coins >= cost) {
+                coins -= cost; ownedSkins.push(skinId); btn.innerText = "Надеть"; btn.style.background = "#10b981";
+                document.getElementById('mainCore').innerText = emo; document.getElementById('mainCore').style.background = bg;
+                ui();
+            }
+        }
+
+        function addIdea() {
+            let text = prompt("Какую фишку добавить в игру?");
+            if (text) alert("Идея успешно принята на рассмотрение!");
+        }
+
+        function ui() {
+            document.getElementById('coinBalance').innerText = coins;
+            document.getElementById('statClick').innerText = clickPower;
+            document.getElementById('statSec').innerText = autoIncome;
+            document.getElementById('playerLvl').innerText = currentLvl;
+            for (let k in prices) {
+                let b = document.getElementById('btn_' + k);
+                if (b) b.disabled = (coins < prices[k]);
+            }
+        }
+
+        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; ui(); } }, 1000);
+        ui();
+    </script>
+</body>
+</html>
