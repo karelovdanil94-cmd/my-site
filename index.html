@@ -62,21 +62,17 @@
             {n:"Матрица",e:"📟",b:"linear-gradient(#111,#047857)",c:2000000},{n:"Спектр",e:"👁️",b:"#4c0519",c:5000000},{n:"Пустота",e:"🌀",b:"#000",c:15000000},{n:"Агент",e:"🕵️‍♂️",b:"#1e1b4b",c:50000000},{n:"Король Сети",e:"👑",b:"#701a75",c:200000000}
         ];
 
-        let nick = localStorage.getItem('v_nk') || prompt("Введите ник для таблицы лидеров:") || "Игрок";
+        let nick = localStorage.getItem('v_nk') || prompt("Введите ваш никнейм:") || "Игрок";
         localStorage.setItem('v_nk', nick);
 
-        let coins = Number(localStorage.getItem('v_c')) || 0, clickPower = Number(localStorage.getItem('v_p')) || 1, autoIncome = Number(localStorage.getItem('v_a')) || 0;
-        let lvl = Number(localStorage.getItem('v_l')) || 1, reb = Number(localStorage.getItem('v_r')) || 0, clks = Number(localStorage.getItem('v_k')) || 0;
-        let curSkin = localStorage.getItem('v_se') || '⭐', curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
-
-        let uPrices = JSON.parse(localStorage.getItem('v_pu')) || Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i)));
-        let rPrices = JSON.parse(localStorage.getItem('v_pp')) || Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i)));
-        let ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
+        let coins = Number(localStorage.getItem('v_c')) || 0, clickPower = Number(localStorage.getItem('v_p')) || 1, autoIncome = Number(localStorage.getItem('v_a')) || 0, lvl = Number(localStorage.getItem('v_l')) || 1, reb = Number(localStorage.getItem('v_r')) || 0, clks = Number(localStorage.getItem('v_k')) || 0, curSkin = localStorage.getItem('v_se') || '⭐', curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
+        let uPrices = JSON.parse(localStorage.getItem('v_pu')) || Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i))), rPrices = JSON.parse(localStorage.getItem('v_pp')) || Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i))), ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
 
         function buildShops() {
-            let h1=''; names.u.forEach((n,i)=>{ h1+=`<div class="card"><span><b>${n}</b> (+${i+1})<br><span id="u_c_${i}">${uPrices[i]}</span> 💰</span><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${i+1})">Купить</button></div>`; });
-            let h2=''; names.r.forEach((n,i)=>{ h2+=`<div class="card"><span><b>${n}</b> (+${(i+1)*2}/с)<br><span id="p_c_${i}">${rPrices[i]}</span> 💰</span><button class="btn" id="p_b_${i}" onclick="buy('r',${i},${(i+1)*2})">Купить</button></div>`; });
-            let h3=''; skins.forEach((s,i)=>{ h3+=`<div class="card"><span><b>${s.n}</b> [${s.e}]<br>${s.c} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
+            let h1='', h2='', h3='';
+            names.u.forEach((n,i)=>{ h1+=`<div class="card"><span><b>${n}</b> (+${i+1})<br><span id="u_c_${i}">${uPrices[i]}</span> 💰</span><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${i+1})">Купить</button></div>`; });
+            names.r.forEach((n,i)=>{ h2+=`<div class="card"><span><b>${n}</b> (+${(i+1)*2}/с)<br><span id="p_c_${i}">${rPrices[i]}</span> 💰</span><button class="btn" id="p_b_${i}" onclick="buy('r',${i},${(i+1)*2})">Купить</button></div>`; });
+            skins.forEach((s,i)=>{ h3+=`<div class="card"><span><b>${s.n}</b> [${s.e}]<br>${s.c} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
             document.getElementById('t1').innerHTML=h1; document.getElementById('t2').innerHTML=h2; document.getElementById('t3').innerHTML=h3;
         }
 
@@ -84,8 +80,12 @@
         function buy(t,i,v) { let a=t==='u'?uPrices:rPrices; if(coins>=a[i]){ coins-=a[i]; if(t==='u')clickPower+=v; else autoIncome+=v; a[i]=Math.floor(a[i]*1.45); save(); ui(); } }
         function buySkin(i) { let s=skins[i]; if(ownedSkins.includes(i)){ curSkin=s.e; curBg=s.b; applySkin(); save(); return; } if(coins>=s.c){ coins-=s.c; ownedSkins.push(i); curSkin=s.e; curBg=s.b; applySkin(); save(); ui(); } }
         function applySkin() { let c=document.getElementById('core'); c.innerText=curSkin; c.style.background=curBg; }
-        function doReb() { if(coins>=15000){ reb++; coins=0; clickPower=1; autoIncome=0; lvl=1; clks=0; uPrices=Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i))); rPrices=Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i))); save(); ui(); alert("✨ Перерождение успешно!"); } }
-        function save() { localStorage.setItem('v_c',coins); localStorage.setItem('v_p',clickPower); localStorage.setItem('v_a',autoIncome); localStorage.setItem('v_l',lvl); localStorage.setItem('v_r',reb); localStorage.setItem('v_k',clks); localStorage.setItem('v_se',curSkin); localStorage.setItem('v_sb',curBg); localStorage.setItem('v_pu',JSON.stringify(uPrices)); localStorage.setItem('v_pp',JSON.stringify(rPrices)); localStorage.setItem('v_so',JSON.stringify(ownedSkins)); updateBoard(); }
+        function doReb() { if(coins>=15000){ reb++; coins=0; clickPower=1; autoIncome=0; lvl=1; clks=0; uPrices=Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i))); rPrices=Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i))); save(); ui(); alert("✨ Перерождение!"); } }
+        
+        function save() { 
+            localStorage.setItem('v_c',coins); localStorage.setItem('v_p',clickPower); localStorage.setItem('v_a',autoIncome); localStorage.setItem('v_l',lvl); localStorage.setItem('v_r',reb); localStorage.setItem('v_k',clks); localStorage.setItem('v_se',curSkin); localStorage.setItem('v_sb',curBg); localStorage.setItem('v_pu',JSON.stringify(uPrices)); localStorage.setItem('v_pp',JSON.stringify(rPrices)); localStorage.setItem('v_so',JSON.stringify(ownedSkins)); 
+            updateBoard(); 
+        }
         function resetG() { localStorage.clear(); location.reload(); }
 
         function ui() {
@@ -98,4 +98,3 @@
         function updateBoard() {
             let top=JSON.parse(localStorage.getItem('k_top_list')) || [{n:"Cyber_Lord",s:120000},{n:"Net_Runner",s:45000},{n:"User_Admin",s:15000}];
             let idx=top.findIndex(u=>u.n===nick); if(idx!==-1){ if(coins>top[idx].s) top[idx].s=coins; } else top.push({n:nick,s:coins});
-Используйте код с осторожностью.top.sort((a,b)=>b.s-a.s); localStorage.setItem('k_top_list',JSON.stringify(top));let html=''; top.slice(0,10).forEach((u,i)=>{ html+=<tr ${u.n===nick?'class="me"':''}><td>${i+1}</td><td>${u.n}</td><td>${u.s} 💰</td></tr>; });document.getElementById('leadBody').innerHTML=html;}
