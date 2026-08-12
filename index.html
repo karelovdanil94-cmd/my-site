@@ -32,6 +32,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             height: fit-content;
+            text-align: center;
         }
         .shop-section {
             flex: 1.5;
@@ -63,10 +64,10 @@
             height: 200px;
             border-radius: 50%;
             background: radial-gradient(circle, #ec4899, #8b5cf6);
-            margin: 40px auto;
+            margin: 30px auto;
             cursor: pointer;
             box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
-            transition: transform 0.05s, filter 0.2s;
+            transition: transform 0.05s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -115,12 +116,28 @@
             border-radius: 14px;
             font-size: 14px;
             color: #94a3b8;
+            margin-bottom: 20px;
         }
+        /* Кнопка предложить идею */
+        .idea-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: 0.2s;
+        }
+        .idea-btn:hover { background: #059669; }
     </style>
 </head>
 <body>
 
-    <h1>🌌 Космическая Эволюция Галактики 🌌</h1>
+    <h1 style="text-align: center;">🌌 Космическая Эволюция Галактики 🌌</h1>
     
     <div class="game-layout">
         <div class="main-section">
@@ -136,6 +153,9 @@
             
             <div id="mainCore" class="sphere-target" onclick="triggerClick()">⭐</div>
             <p style="color: #64748b; font-size: 13px;">Развивай базу, нанимай роботов и собирай скины!</p>
+            
+            <!-- НОВАЯ КНОПКА ИДЕЙ -->
+            <button class="idea-btn" onclick="suggestIdea()">💡 Предложить идею</button>
         </div>
 
         <div class="shop-section">
@@ -152,28 +172,36 @@
                 <div class="card-info"><div class="card-name">Фотонный Пульсар</div><div class="card-desc">+25 к силе клика</div><div class="card-cost" id="costU3">Цена: 800 💰</div></div>
                 <button class="action-btn" id="btnU3" onclick="buyItem('u3', 25, 'click')">Купить</button>
             </div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Гравитационный Молот</div><div class="card-desc">+100 к силе клика</div><div class="card-cost" id="costU4">Цена: 4000 💰</div></div>
+                <button class="action-btn" id="btnU4" onclick="buyItem('u4', 100, 'click')">Купить</button>
+            </div>
 
             <div class="tab-title">🤖 Автокликеры (Пассивный доход)</div>
             <div class="card-item">
-                <div class="card-info"><div class="card-name">Дрон-Сборщик</div><div class="card-desc">+1 💰 каждую секунду</div><div class="card-cost" id="costA1">Цена: 40 💰</div></div>
+                <div class="card-info"><div class="card-name">Дрон-Сборщик</div><div class="card-desc">+1 💰 в секунду</div><div class="card-cost" id="costA1">Цена: 40 💰</div></div>
                 <button class="action-btn" id="btnA1" onclick="buyItem('a1', 1, 'auto')">Нанять</button>
             </div>
             <div class="card-item">
-                <div class="card-info"><div class="card-name">Станция Генерации</div><div class="card-desc">+8 💰 каждую секунду</div><div class="card-cost" id="costA2">Цена: 350 💰</div></div>
+                <div class="card-info"><div class="card-name">Станция Генерации</div><div class="card-desc">+8 💰 в секунду</div><div class="card-cost" id="costA2">Цена: 350 💰</div></div>
                 <button class="action-btn" id="btnA2" onclick="buyItem('a2', 8, 'auto')">Нанять</button>
             </div>
             <div class="card-item">
-                <div class="card-info"><div class="card-name">Квантовый Сервер</div><div class="card-desc">+50 💰 каждую секунду</div><div class="card-cost" id="costA3">Цена: 2000 💰</div></div>
+                <div class="card-info"><div class="card-name">Квантовый Сервер</div><div class="card-desc">+50 💰 в секунду</div><div class="card-cost" id="costA3">Цена: 2000 💰</div></div>
                 <button class="action-btn" id="btnA3" onclick="buyItem('a3', 50, 'auto')">Нанять</button>
+            </div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Био-Реактор Материи</div><div class="card-desc">+300 💰 в секунду</div><div class="card-cost" id="costA4">Цена: 12000 💰</div></div>
+                <button class="action-btn" id="btnA4" onclick="buyItem('a4', 300, 'auto')">Нанять</button>
             </div>
 
             <div class="tab-title">🦊 Космические Питомцы</div>
             <div class="card-item">
-                <div class="card-info"><div class="card-name">Инопланетный Лис</div><div class="card-desc">Дает +15 💰 в секунду пассивно</div><div class="card-cost" id="costP1">Цена: 1000 💰</div></div>
+                <div class="card-info"><div class="card-name">Инопланетный Лис</div><div class="card-desc">+15 💰 в секунду пассивно</div><div class="card-cost" id="costP1">Цена: 1000 💰</div></div>
                 <button class="action-btn" id="btnP1" onclick="buyItem('p1', 15, 'auto')">Приручить</button>
             </div>
             <div class="card-item">
-                <div class="card-info"><div class="card-name">Астральный Феникс</div><div class="card-desc">Дает +120 💰 в секунду пассивно</div><div class="card-cost" id="costP2">Цена: 6000 💰</div></div>
+                <div class="card-info"><div class="card-name">Астральный Феникс</div><div class="card-desc">+120 💰 в секунду пассивно</div><div class="card-cost" id="costP2">Цена: 6000 💰</div></div>
                 <button class="action-btn" id="btnP2" onclick="buyItem('p2', 120, 'auto')">Приручить</button>
             </div>
 
@@ -184,40 +212,3 @@
             </div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Скин: Неоновый Лёд</div><div class="card-desc">Перекрашивает сферу</div><div class="card-cost">Цена: 1500 💰</div></div>
-                <button class="action-btn" id="btnS2" onclick="activateSkin(2, 1500, '❄️', 'radial-gradient(circle, #06b6d4, #1d4ed8)')">Купить</button>
-            </div>
-            <div class="card-item">
-                <div class="card-info"><div class="card-name">Скин: Черная Дыра</div><div class="card-desc">Перекрашивает сферу</div><div class="card-cost">Цена: 8000 💰</div></div>
-                <button class="action-btn" id="btnS3" onclick="activateSkin(3, 8000, '🌌', 'radial-gradient(circle, #1e1b4b, #000000)')">Купить</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ТАЙНЫЙ ЛОГГЕР -->
-    <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
-
-    <script>
-        let coins = 0;
-        let clickPower = 1;
-        let autoIncome = 0;
-        let totalClicks = 0;
-        let currentLvl = 1;
-        let nextLvlClicks = 50;
-
-        let prices = { u1: 15, u2: 120, u3: 800, a1: 40, a2: 350, a3: 2000, p1: 1000, p2: 6000 };
-        let ownedSkins = [];
-
-        function triggerClick() {
-            coins += clickPower;
-            totalClicks++;
-            if (totalClicks >= nextLvlClicks) {
-                currentLvl++;
-                nextLvlClicks = Math.floor(nextLvlClicks * 2.5);
-                clickPower += 2;
-                alert("🎉 Уровень повышен! Новый уровень: " + currentLvl);
-            }
-            refreshInterface();
-        }
-
-
-        
