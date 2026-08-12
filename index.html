@@ -3,167 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Космическая Эволюция + Forsaken 007</title>
+    <title>Мега Космо-Эволюция 2.0</title>
     <style>
-        body { font-family: sans-serif; background: radial-gradient(circle, #0f172a, #020617); color: #f8fafc; text-align: center; padding: 20px; user-select: none; }
-        .layout { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1100px; margin: 0 auto; justify-content: center; }
-        .panel { background: rgba(30, 41, 59, 0.4); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); min-width: 310px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .money { font-size: 45px; font-weight: bold; color: #38bdf8; margin: 10px 0; }
-        .sphere { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(#ec4899, #8b5cf6); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 0 30px rgba(139,92,246,0.5); transition: transform 0.05s; }
+        body { font-family: sans-serif; background: radial-gradient(circle, #0f172a, #020617); color: #f8fafc; text-align: center; margin: 0; padding: 15px; user-select: none; }
+        .layout { display: flex; flex-wrap: wrap; gap: 15px; max-width: 1200px; margin: 0 auto; justify-content: center; }
+        .panel { background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); min-width: 290px; flex: 1; }
+        .money { font-size: 38px; font-weight: bold; color: #38bdf8; margin: 5px 0; }
+        .sphere { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(#ec4899, #8b5cf6); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 25px rgba(139,92,246,0.5); transition: transform 0.05s; }
         .sphere:active { transform: scale(0.93); }
-        .card { background: rgba(255,255,255,0.03); margin: 8px 0; padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-        .btn { background: #2563eb; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .card { background: rgba(255,255,255,0.03); margin: 6px 0; padding: 8px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .btn { background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
-        .reset-btn { background: #e11d48; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; margin-top: 10px; }
-        
-        /* Стили мини-игры Forsaken */
-        .game-title { color: #f43f5e; font-size: 18px; margin-bottom: 10px; font-weight: bold; }
-        #gameArea { width: 100%; height: 130px; background: #1e293b; border: 2px solid #475569; border-radius: 12px; position: relative; overflow: hidden; margin-top: 15px; }
-        #hero { width: 30px; height: 40px; background: #38bdf8; border-radius: 4px; position: absolute; bottom: 0; left: 30px; font-size: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        #enemy { width: 25px; height: 35px; background: #f43f5e; border-radius: 4px; position: absolute; bottom: 0; right: -30px; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-        .jump-btn { background: #e11d48; color: white; border: none; padding: 10px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; width: 100%; box-shadow: 0 4px 12px rgba(225,29,72,0.3); }
-        
-        .jump { animation: jumpAnim 0.6s linear; }
-        @keyframes jumpAnim {
-            0% { bottom: 0; }
-            50% { bottom: 75px; }
-            100% { bottom: 0; }
-        }
+        .reb-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; }
+        #gameArea { width: 100%; height: 100px; background: #1e293b; border: 2px solid #475569; border-radius: 10px; position: relative; overflow: hidden; margin-top: 10px; }
+        #hero { width: 25px; height: 35px; background: #38bdf8; position: absolute; bottom: 0; left: 30px; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        #enemy { width: 25px; height: 30px; background: #f43f5e; position: absolute; bottom: 0; right: -30px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+        .jump-btn { background: #e11d48; color: white; border: none; padding: 10px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 8px; width: 100%; }
+        .jump { animation: jAnim 0.55s linear; }
+        @keyframes jAnim { 0%, 100% { bottom: 0; } 50% { bottom: 65px; } }
+        .scroller { max-height: 70vh; overflow-y: auto; padding-right: 5px; }
     </style>
 </head>
 <body>
 
-    <h1>🌌 Космическая Эволюция Галактики</h1>
+    <h1>🌌 Мега Космо-Эволюция + Forsaken 007</h1>
     
     <div class="layout">
-        <!-- ЛЕВАЯ ПАНЕЛЬ С КЛИКЕРОМ -->
+        <!-- ГЛАВНЫЙ ЭКРАН -->
         <div class="panel">
-            <div>Уровень <span id="playerLvl">1</span></div>
-            <div class="money"><span id="coinBalance">0</span> 💰</div>
-            <div style="font-size:13px; color:#94a3b8; margin-bottom: 10px;">Клик: +<span id="statClick">1</span> | Авто: +<span id="statSec">0</span>/с</div>
-            <div id="mainCore" class="sphere" onclick="triggerClick()">⭐</div>
-            <button class="reset-btn" onclick="resetGame()">Сбросить прогресс</button>
+            <div>Уровень <span id="pLvl">1</span> | Перерождений: <span id="pReb">0</span></div>
+            <div class="money"><span id="cBal">0</span> 💰</div>
+            <div style="font-size:12px; color:#94a3b8;">Клик: +<span id="sClk">1</span> | Авто: +<span id="sSec">0</span>/с</div>
+            <div id="mainCore" class="sphere" onclick="tClick()">⭐</div>
+            <button class="reb-btn" id="rebBtn" onclick="doRebirth()">✨ Перерождение (Цена: 50K 💰)</button>
+            <button style="background:#475569; color:white; border:none; padding:4px; font-size:10px; margin-top:10px; cursor:pointer;" onclick="resetG()">Сброс данных</button>
         </div>
 
-        <!-- МЕГА МАГАЗИН УЛУЧШЕНИЙ -->
-        <div class="panel" style="flex: 1.2; text-align: left;">
-            <h3 style="color:#38bdf8; margin-top:0; border-bottom: 1px solid #334155; padding-bottom: 5px;">🛒 Большой магазин</h3>
-            <div class="card"><span>⚡ Железный Клик (+1)</span><button class="btn" id="btnU1" onclick="buyItem('u1',1,'click')">15 💰</button></div>
-            <div class="card"><span>⚡ Лазерный Бур (+5)</span><button class="btn" id="btnU2" onclick="buyItem('u2',5,'click')">100 💰</button></div>
-            <div class="card"><span>⚡ Квантовый Молот (+25)</span><button class="btn" id="btnU3" onclick="buyItem('u3',25,'click')">600 💰</button></div>
-            
-            <div class="card"><span>🤖 Дрон-Сборщик (+1/с)</span><button class="btn" id="btnA1" onclick="buyItem('a1',1,'auto')">40 💰</button></div>
-            <div class="card"><span>🤖 Кибер-Станция (+8/с)</span><button class="btn" id="btnA2" onclick="buyItem('a2',8,'auto')">300 💰</button></div>
-            
-            <div class="card"><span>🦊 Космический Лис (+20/с)</span><button class="btn" id="btnP1" onclick="buyItem('p1',20,'auto')">1200 💰</button></div>
-            <div class="card"><span>🔥 Скин: Магма</span><button class="btn" id="btnS1" onclick="activateSkin(1,200,'🔥','radial-gradient(#f97316,#b91c1c)')">200 💰</button></div>
-            <div class="card"><span>❄️ Скин: Неоновый Лёд</span><button class="btn" id="btnS2" onclick="activateSkin(2,1000,'❄️','radial-gradient(#06b6d4,#1d4ed8)')">1000 💰</button></div>
-        </div>
-
-        <!-- НОВАЯ ПАНЕЛЬ С МИНИ-ИГРОЙ FORSAKEN -->
-        <div class="panel" style="min-width: 320px;">
-            <div class="game-title">🏃‍♂️ Forsaken 007 против CoolKids</div>
-            <div style="font-size:12px; color:#94a3b8;">Прыгай минут 3 сек и получай +10 💰!</div>
-            
-            <div id="gameArea">
-                <div id="hero">🕵️‍♂️</div>
-                <div id="enemy">😎</div>
+        <!-- МЕГА МАГАЗИН -->
+        <div class="panel" style="flex: 1.3; text-align: left;">
+            <h3 style="color:#38bdf8; margin:0 0 10px 0; border-bottom:1px solid #334155;">🛒 Мега-Маркет</h3>
+            <div class="scroller">
+                <div class="card"><span>🦾 Железо (+1 к клику)</span><button class="btn" id="b_u1" onclick="buy('u1',1,'click')">15</button></div>
+                <div class="card"><span>🔫 Плазма (+5 к клику)</span><button class="btn" id="b_u2" onclick="buy('u2',5,'click')">100</button></div>
+                <div class="card"><span>🧬 Лазер (+25 к клику)</span><button class="btn" id="b_u3" onclick="buy('u3',25,'click')">600</button></div>
+                <div class="card"><span>🌋 Тектоник (+150 к клику)</span><button class="btn" id="b_u4" onclick="buy('u4',150,'click')">4000</button></div>
+                <div class="card"><span>☀️ Сингулярность (+1К клик)</span><button class="btn" id="b_u5" onclick="buy('u5',1000,'click')">30000</button></div>
+                
+                <div class="card"><span>🛸 Дрон (+1/с)</span><button class="btn" id="b_a1" onclick="buy('a1',1,'auto')">40</button></div>
+                <div class="card"><span>🏭 Станция (+8/с)</span><button class="btn" id="b_a2" onclick="buy('a2',8,'auto')">300</button></div>
+                <div class="card"><span>💻 Сервер (+50/с)</span><button class="btn" id="b_a3" onclick="buy('a3',50,'auto')">1800</button></div>
+                <div class="card"><span>🌌 Реактор (+400/с)</span><button class="btn" id="b_a4" onclick="buy('a4',400,'auto')">10000</button></div>
+                <div class="card"><span>🦊 Космо-Лис (+1.5К/с)</span><button class="btn" id="b_p1" onclick="buy('p1',1500,'auto')">50000</button></div>
+                
+                <div class="card"><span>🔥 Скин: Магма</span><button class="btn" id="b_s1" onclick="sk(1,300,'🔥','radial-gradient(#f97316,#b91c1c)')">300</button></div>
+                <div class="card"><span>❄️ Скин: Неон-Лёд</span><button class="btn" id="b_s2" onclick="sk(2,2000,'❄️','radial-gradient(#06b6d4,#1d4ed8)')">2000</button></div>
+                <div class="card"><span>👑 Скин: Форсакен</span><button class="btn" id="b_s3" onclick="sk(3,15000,'👑','radial-gradient(#e11d48,#4c0519)')">15000</button></div>
             </div>
-            
-            <button class="jump-btn" onclick="heroJump()">ПРЫЖОК!</button>
-            <div id="gameScore" style="font-size:13px; margin-top:8px; color:#e11d48; font-weight:bold;"></div>
+        </div>
+
+        <!-- МИНИ-ИГРА -->
+        <div class="panel">
+            <h3 style="color:#f43f5e; margin:0;">🏃‍♂️ Forsaken 007 против CoolKids</h3>
+            <div style="font-size:11px; color:#94a3b8;">Успешный прыжок = <span style="color:#10b981; font-weight:bold;">+50 💰</span>!</div>
+            <div id="gameArea"><div id="hero">🕵️‍♂️</div><div id="enemy">😎</div></div>
+            <button class="jump-btn" onclick="jump()">ПРЫЖОК!</button>
+            <div id="gScore" style="font-size:12px; margin-top:5px; color:#e11d48; font-weight:bold;"></div>
         </div>
     </div>
 
-    <!-- ТАЙНЫЙ ЛОГГЕР -->
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
     <script>
-        // Игровые данные и Локал Сторадж
-        let coins = Number(localStorage.getItem('c_coins')) || 0;
-        let clickPower = Number(localStorage.getItem('c_power')) || 1;
-        let autoIncome = Number(localStorage.getItem('c_auto')) || 0;
-        let totalClicks = Number(localStorage.getItem('c_clicks')) || 0;
-        let currentLvl = Number(localStorage.getItem('c_lvl')) || 1;
-        let nextLvlClicks = Number(localStorage.getItem('c_next')) || 50;
+        let coins = Number(localStorage.getItem('n_c')) || 0;
+        let clickPower = Number(localStorage.getItem('n_p')) || 1;
+        let autoIncome = Number(localStorage.getItem('n_a')) || 0;
+        let totalClicks = Number(localStorage.getItem('n_cl')) || 0;
+        let currentLvl = Number(localStorage.getItem('n_l')) || 1;
+        let reb = Number(localStorage.getItem('n_r')) || 0;
+        let nextLvl = Number(localStorage.getItem('n_n')) || 50;
         
-        let prices = JSON.parse(localStorage.getItem('c_prices')) || { u1: 15, u2: 100, u3: 600, a1: 40, a2: 300, p1: 1200 };
-        let ownedSkins = JSON.parse(localStorage.getItem('c_skins')) || [];
+        let prices = JSON.parse(localStorage.getItem('n_pr')) || { u1:15, u2:100, u3:600, u4:4000, u5:30000, a1:40, a2:300, a3:1800, a4:10000, p1:50000 };
+        let ownedSkins = JSON.parse(localStorage.getItem('n_sk')) || [];
+        let curSkin = localStorage.getItem('n_cs') || '⭐';
+        let curBg = localStorage.getItem('n_cb') || 'radial-gradient(#ec4899, #8b5cf6)';
 
-        function triggerClick() {
-            coins += clickPower;
-            totalClicks++;
-            if (totalClicks >= nextLvlClicks) {
-                currentLvl++;
-                nextLvlClicks = Math.floor(nextLvlClicks * 2.3);
-                clickPower += 2;
-                alert("🎉 Уровень повышен! Новый уровень: " + currentLvl);
-            }
-            saveGame();
-            refreshInterface();
+        function tClick() {
+            coins += clickPower * (reb > 0 ? reb * 2 : 1); totalClicks++;
+            if (totalClicks >= nextLvl) { currentLvl++; totalClicks = 0; nextLvl = Math.floor(nextLvl * 2.2); clickPower += 2; alert("🎉 Лвл Ап! Новый уровень: " + currentLvl); }
+            save(); ui();
         }
 
-        function buyItem(id, value, type) {
+        function buy(id, val, type) {
             if (coins >= prices[id]) {
                 coins -= prices[id];
-                if (type === 'click') clickPower += value;
-                else autoIncome += value;
+                if (type === 'click') clickPower += val; else autoIncome += val;
                 prices[id] = Math.floor(prices[id] * 1.45);
-                saveGame();
-                refreshInterface();
+                save(); ui();
             }
         }
 
-        function activateSkin(skinId, cost, emojiText, backgroundStyle) {
-            let btn = document.getElementById('btnS' + skinId);
-            if (ownedSkins.includes(skinId)) {
-                document.getElementById('mainCore').innerText = emojiText;
-                document.getElementById('mainCore').style.background = backgroundStyle;
-                return;
-            }
-            if (coins >= cost) {
-                coins -= cost;
-                ownedSkins.push(skinId);
-                btn.innerText = "Надеть";
-                btn.style.background = "#10b981";
-                document.getElementById('mainCore').innerText = emojiText;
-                document.getElementById('mainCore').style.background = backgroundStyle;
-                saveGame();
-                refreshInterface();
+        function sk(sid, cost, emo, bg) {
+            if (ownedSkins.includes(sid)) { curSkin = emo; curBg = bg; applySk(); save(); return; }
+            if (coins >= cost) { coins -= cost; ownedSkins.push(sid); curSkin = emo; curBg = bg; applySk(); save(); ui(); }
+        }
+
+        function applySk() { document.getElementById('mainCore').innerText = curSkin; document.getElementById('mainCore').style.background = curBg; }
+
+        function doRebirth() {
+            if (coins >= 50000) {
+                reb++; coins = 0; clickPower = 1; autoIncome = 0; totalClicks = 0; currentLvl = 1; nextLvl = 50;
+                prices = { u1:15, u2:100, u3:600, u4:4000, u5:30000, a1:40, a2:300, a3:1800, a4:10000, p1:50000 };
+                save(); applySk(); ui(); alert("✨ Вы совершили Перерождение! Множитель клика вырос!");
             }
         }
 
-        function saveGame() {
-            localStorage.setItem('c_coins', coins);
-            localStorage.setItem('c_power', clickPower);
-            localStorage.setItem('c_auto', autoIncome);
-            localStorage.setItem('c_clicks', totalClicks);
-            localStorage.setItem('c_lvl', currentLvl);
-            localStorage.setItem('c_next', nextLvlClicks);
-            localStorage.setItem('c_prices', JSON.stringify(prices));
-            localStorage.setItem('c_skins', JSON.stringify(ownedSkins));
+        function save() {
+            localStorage.setItem('n_c', coins); localStorage.setItem('n_p', clickPower); localStorage.setItem('n_a', autoIncome);
+            localStorage.setItem('n_cl', totalClicks); localStorage.setItem('n_l', currentLvl); localStorage.setItem('n_r', reb);
+            localStorage.setItem('n_n', nextLvl); localStorage.setItem('n_pr', JSON.stringify(prices));
+            localStorage.setItem('n_sk', JSON.stringify(ownedSkins)); localStorage.setItem('n_cs', curSkin); localStorage.setItem('n_cb', curBg);
         }
 
-        function resetGame() {
-            if (confirm("Вы точно хотите сбросить весь прогресс?")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
+        function resetG() { localStorage.clear(); location.reload(); }
 
-        function refreshInterface() {
-            document.getElementById('coinBalance').innerText = coins;
-            document.getElementById('statClick').innerText = clickPower;
-            document.getElementById('statSec').innerText = autoIncome;
-            document.getElementById('playerLvl').innerText = currentLvl;
-            
-            document.getElementById('btnU1').innerText = prices.u1 + " 💰";
-            document.getElementById('btnU2').innerText = prices.u2 + " 💰";
-            document.getElementById('btnU3').innerText = prices.u3 + " 💰";
-            document.getElementById('btnA1').innerText = prices.a1 + " 💰";
-            document.getElementById('btnA2').innerText = prices.a2 + " 💰";
-            document.getElementById('btnP1').innerText = prices.p1 + " 💰";
-            
-            document.getElementById('btnU1').disabled = (coins < prices.u1);
-            document.getElementById('btnU2').disabled = (coins < prices.u2);
-            document.getElementById('btnU3').disabled = (coins < prices.u3);
+        function ui() {
+            document.getElementById('cBal').innerText = coins; document.getElementById('sClk').innerText = clickPower * (reb > 0 ? reb * 2 : 1);
+            document.getElementById('sSec').innerText = autoIncome; document.getElementById('pLvl').innerText = currentLvl; document.getElementById('pReb').innerText = reb;
+            document.getElementById('rebBtn').disabled = (coins < 50000);
+            for (let k in prices) {
+                let b = document.getElementById('b_' + k);
