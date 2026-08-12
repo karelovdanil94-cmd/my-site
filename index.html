@@ -3,135 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кибер Эволюция X</title>
+    <title>Кибер Сфера Кликер</title>
     <style>
-        body { font-family: sans-serif; background: #03001e; background: linear-gradient(to right, #03001e, #7303c0, #ec38bc); color: #fff; text-align: center; margin: 0; padding: 10px; user-select: none; }
-        .layout { display: flex; flex-wrap: wrap; gap: 10px; max-width: 1200px; margin: 0 auto; justify-content: center; }
-        .panel { background: rgba(0, 0, 0, 0.8); padding: 15px; border-radius: 16px; border: 2px solid #ec38bc; min-width: 280px; flex: 1; box-shadow: 0 0 20px #7303c0; }
-        .money { font-size: 35px; font-weight: bold; color: #00f6ff; text-shadow: 0 0 10px #00f6ff; }
-        .sphere { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(#00f6ff, #7303c0); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 25px #00f6ff; transition: transform 0.05s; }
+        body { font-family: sans-serif; background: #0a0f1d; color: #fff; margin: 0; padding: 20px; user-select: none; }
+        .main-box { background: #111827; max-width: 500px; margin: 0 auto 20px auto; padding: 20px; border-radius: 16px; border: 2px solid #00f6ff; text-align: center; box-shadow: 0 0 15px rgba(0,246,255,0.2); }
+        .money { font-size: 40px; font-weight: bold; color: #00f6ff; margin: 10px 0; }
+        .sphere { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(#00f6ff, #7303c0); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 20px #00f6ff; transition: transform 0.05s; }
         .sphere:active { transform: scale(0.93); }
-        .scroller { max-height: 50vh; overflow-y: auto; padding-right: 5px; }
-        .card { background: rgba(255,255,255,0.05); margin: 5px 0; padding: 6px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; border-left: 3px solid #ec38bc; text-align: left; }
-        .btn { background: #7303c0; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn:disabled { background: #333; color: #777; cursor: not-allowed; }
-        .tab-btn { background: #111; color: #aaa; border: 1px solid #7303c0; padding: 6px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 11px; }
-        .tab-active { background: #ec38bc; color: white; }
-        #gArea { width: 100%; height: 100px; background: #111; border: 2px solid #00f6ff; border-radius: 8px; position: relative; overflow: hidden; margin-top: 10px; }
-        #h { width: 20px; height: 30px; background: #00f6ff; position: absolute; bottom: 0; left: 30px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-        #e { width: 20px; height: 25px; background: #ec38bc; position: absolute; bottom: 0; right: -20px; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-        .jump { animation: j 0.48s linear; }
-        @keyframes j { 0%,100% { bottom:0; } 50% { bottom:65px; } }
-        /* Скример */
-        #scrim { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999; justify-content: center; align-items: center; font-size: 150px; color: red; font-weight: bold; text-shadow: 0 0 50px red; }
-        .scrim-trigger { width: 8px; height: 8px; background: rgba(255,255,255,0.05); border: none; border-radius: 50%; cursor: pointer; position: absolute; bottom: 5px; left: 5px; }
+        .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .col { background: #1f2937; padding: 15px; border-radius: 12px; border: 1px solid #374151; }
+        .col h3 { margin-top: 0; border-bottom: 2px solid #374151; padding-bottom: 5px; }
+        .card { background: rgba(255,255,255,0.05); margin: 8px 0; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .btn { background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn:disabled { background: #4b5563; color: #9ca3af; cursor: not-allowed; }
+        .action-btn { background: #10b981; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 5px; }
     </style>
 </head>
 <body>
 
-    <h1>🌌 НЕОНОВАЯ КИБЕР-ЭВОЛЮЦИЯ X 🌌</h1>
-    
-    <div class="layout">
-        <!-- ГЛАВНАЯ ПАНЕЛЬ -->
-        <div class="panel">
-            <div>Лвл: <span id="lvl">1</span> | Реберхи: <span id="reb">0</span></div>
-            <div class="money"><span id="bal">0</span> 💰</div>
-            <div style="font-size:11px; color:#aaa;">Клик: +<span id="clk">1</span> | Авто: +<span id="cps">0</span>/с</div>
-            <div id="core" class="sphere" onclick="tClick()">⭐</div>
-            <button class="btn" style="background:#00f6ff; color:#000; width:100%; margin-top:5px;" id="rBtn" onclick="doReb()">✨ Перерождение (Цена: 25К 💰)</button>
-            <button style="background:#222; color:#888; border:none; font-size:9px; margin-top:8px; cursor:pointer;" onclick="resetG()">Сбросить всё</button>
-            <button class="scrim-trigger" onclick="sScreamer()"></button>
-        </div>
+    <div class="main-box">
+        <h2>🌌 Кибер Сфера Эволюции</h2>
+        <div>Уровень: <span id="lvl">1</span> | Перерождения: <span id="reb">0</span></div>
+        <div class="money"><span id="bal">0</span> 💰</div>
+        <div style="font-size: 13px; color: #9ca3af;">Клик: +<span id="clk">1</span> | Авто: +<span id="cps">0</span>/с</div>
+        <div id="core" class="sphere" onclick="tClick()">⭐</div>
+        <button class="action-btn" id="rBtn" onclick="doReb()">✨ Перерождение (Цена: 10К 💰)</button>
+        <button class="action-btn" style="background:#ef4444;" onclick="resetG()">Сброс</button>
+    </div>
 
-        <!-- МАГАЗИН: 5 ВКЛАДОК ПО 15 ТОВАРОВ (ВСЕГО 75) -->
-        <div class="panel" style="flex: 1.2;">
-            <div style="display:flex; justify-content:space-between; gap:2px; margin-bottom:8px;">
-                <button class="tab-btn tab-active" id="tb1" onclick="tab(1)">⚡ Клик</button>
-                <button class="tab-btn" id="tb2" onclick="tab(2)">🦊 Питомцы</button>
-                <button class="tab-btn" id="tb3" onclick="tab(3)">🎨 Скины</button>
-                <button class="tab-btn" id="tb4" onclick="tab(4)">🛸 Дроны</button>
-                <button class="tab-btn" id="tb5" onclick="tab(5)">🚀 Бусты</button>
-            </div>
-            <div class="scroller" id="t1"></div>
-            <div class="scroller" id="t2" style="display:none"></div>
-            <div class="scroller" id="t3" style="display:none"></div>
-            <div class="scroller" id="t4" style="display:none"></div>
-            <div class="scroller" id="t5" style="display:none"></div>
+    <div class="columns">
+        <div class="col" style="border-top: 3px solid #00f6ff;">
+            <h3 style="color:#00f6ff;">⚡ Апгрейды клика</h3>
+            <div id="t1"></div>
         </div>
-
-        <!-- МИНИ-ИГРА -->
-        <div class="panel">
-            <h3 style="margin:0 0 5px 0; font-size:14px;">🎮 Раннер: Прыжки мимо Кулкидс</h3>
-            <div id="gArea"><div id="h">🕵️‍♂️</div><div id="e">😎</div></div>
-            <button class="btn" style="width:100%; margin-top:5px; background:#ec38bc" onclick="jump()">ПРЫЖОК (Дает +50 💰)</button>
-            <div id="gTxt" style="font-size:12px; margin-top:5px; color:#00f6ff; font-weight:bold;"></div>
+        <div class="col" style="border-top: 3px solid #ec38bc;">
+            <h3 style="color:#ec38bc;">🤖 Роботы (Авто)</h3>
+            <div id="t2"></div>
+        </div>
+        <div class="col" style="border-top: 3px solid #f59e0b;">
+            <h3 style="color:#f59e0b;">🎨 Скины сферы</h3>
+            <div id="t3"></div>
         </div>
     </div>
 
-    <!-- ТАЙНЫЙ ЛОГГЕР -->
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
-    <!-- ОКНО СКРИМЕРА -->
-    <div id="scrim">👹</div>
-
     <script>
-        // Генерация названий для 75 видов предметов (по 15 в каждой категории)
-        const categories = {
-            upg: ["Чип","Кабель","ОЗУ","Процессор","Видяха","Блок лазера","Тектоник","Фотон","Квант","Материя","Ядро","ДНК","Сингулярность","Космос","Импульс"],
-            pet: ["Бот-Дрон","Микро-Паук","Дроид","Кибер-Кот","Лис Сети","Феникс","Волк","Тигр Пустоты","Андроид","Астрал-Лич","ИИ-Лорд","Творец","Голем","Матрикс","Омега"],
-            drone: ["Скаут-1","Сборщик-2","Тяжелый Дрон","Квантовый БПЛА","Нео-Вайпер","Вектор-М","Шершень","Призма","Орион","Пульсар","Страж","Орион-X","Фантом","Призрак","Центурион"],
-            boost: ["Энергосеть","Разгон ОЗУ","Турбо-Ток","Стабилизатор","Пул циклов","Супер-Ватт","Крио-Двигатель","Тахион","Варп-Драйв","Гипер-Кварк","Множитель","Атлас","Генезис","Хронос","Этернус"]
-        };
+        const upgData = [
+            {n:"Дата-кабель",v:1,c:10},{n:"Микрочип",v:3,c:50},{n:"Модуль ОЗУ",v:8,c:250},{n:"Процессор",v:25,c:1000},{n:"Видеокарта",v:70,c:4000}
+        ];
+        const petData = [
+            {n:"Бот-Дрон",v:1,c:20},{n:"Майнер",v:5,c:150},{n:"ИИ-Ассистент",v:15,c:600},{n:"Серверная станция",v:50,c:2500},{n:"Ядерный генератор",v:150,c:10000}
+        ];
         const skinData = [
-            {n:"Рубин",e:"🔴",b:"#b91c1c",c:100},{n:"Изумруд",e:"🟢",b:"#047857",c:250},{n:"Золото",e:"👑",b:"#b45309",c:600},{n:"Аметист",e:"🔮",b:"#6d28d9",c:1500},{n:"Сапфир",e:"🔷",b:"#1d4ed8",c:3500},
-            {n:"Магма",e:"🔥",b:"linear-gradient(#f97316,#b91c1c)",c:8000},{n:"Неон-Лёд",e:"❄️",b:"linear-gradient(#06b6d4,#1d4ed8)",c:18000},{n:"Матрица",e:"📟",b:"linear-gradient(#111,#047857)",c:40000},{n:"Затмение",e:"🌑",b:"#111827",c:90000},{n:"Радуга",e:"🌈",b:"linear-gradient(to right,red,orange,yellow,green,blue,violet)",c:200000},
-            {n:"Спектр",e:"👁️",b:"#4c0519",c:500000},{n:"Галактика",e:"🌌",b:"#03001e",c:1500000},{n:"Пустота",e:"🌀",b:"#000",c:4500000},{n:"Агент 007",e:"🕵️‍♂️",b:"#1e1b4b",c:12000000},{n:"Кулкид",e:"😎",b:"#701a75",c:40000000}
+            {n:"Изумруд",e:"🟢",b:"#047857",c:100},{n:"Золото",e:"👑",b:"#b45309",c:300},{n:"Магма",e:"🔥",b:"linear-gradient(#f97316,#b91c1c)",c:1000},{n:"Лёд",e:"❄️",b:"linear-gradient(#06b6d4,#1d4ed8)",c:5000},{n:"Космос",e:"🌌",b:"#03001e",c:20000}
         ];
 
-        let coins = Number(localStorage.getItem('x_c')) || 0;
-        let clickPower = Number(localStorage.getItem('x_p')) || 1;
-        let autoIncome = Number(localStorage.getItem('x_a')) || 0;
-        let lvl = Number(localStorage.getItem('x_l')) || 1;
-        let reb = Number(localStorage.getItem('x_r')) || 0;
-        let clks = Number(localStorage.getItem('x_k')) || 0;
-        let curSkin = localStorage.getItem('x_s_e') || '⭐';
-        let curBg = localStorage.getItem('x_s_b') || 'radial-gradient(#00f6ff, #7303c0)';
+        let coins = Number(localStorage.getItem('v_c')) || 0;
+        let clickPower = Number(localStorage.getItem('v_p')) || 1;
+        let autoIncome = Number(localStorage.getItem('v_a')) || 0;
+        let lvl = Number(localStorage.getItem('v_l')) || 1;
+        let reb = Number(localStorage.getItem('v_r')) || 0;
+        let clks = Number(localStorage.getItem('v_k')) || 0;
+        let curSkin = localStorage.getItem('v_se') || '⭐';
+        let curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
 
-        // Массивы цен с автогенерацией
-        let uPrices = JSON.parse(localStorage.getItem('x_p_u')) || Array.from({length:15},(_,i)=>Math.floor(15*Math.pow(3.5,i)));
-        let pPrices = JSON.parse(localStorage.getItem('x_p_p')) || Array.from({length:15},(_,i)=>Math.floor(30*Math.pow(3.6,i)));
-        let dPrices = JSON.parse(localStorage.getItem('x_p_d')) || Array.from({length:15},(_,i)=>Math.floor(100*Math.pow(3.7,i)));
-        let bPrices = JSON.parse(localStorage.getItem('x_p_b')) || Array.from({length:15},(_,i)=>Math.floor(500*Math.pow(3.8,i)));
-        let ownedSkins = JSON.parse(localStorage.getItem('x_sk_o')) || [];
+        let upgPrices = JSON.parse(localStorage.getItem('v_pu')) || upgData.map(i=>i.c);
+        let petPrices = JSON.parse(localStorage.getItem('v_pp')) || petData.map(i=>i.c);
+        let ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
 
-        // Авто-генерация HTML для всех магазинов
-        function genShop(divId, names, prices, valMultiplier, mode) {
-            let html = '';
-            names.forEach((name, i) => {
-                let addVal = (i + 1) * valMultiplier;
-                html += `<div class="card">
-                    <span><b>${name}</b> (+${addVal}${mode==='clk'?' к кл.':'/с'})<br><span id="${divId}_c_${i}">${prices[i]}</span> 💰</span>
-                    <button class="btn" id="${divId}_b_${i}" onclick="buy('${divId}',${i},${addVal},'${mode}')">Купить</button>
-                </div>`;
-            });
-            document.getElementById(divId).innerHTML = html;
-        }
-
-        function genSkins() {
-            let html = '';
-            skinData.forEach((s, i) => {
-                html += `<div class="card"><span><b>${s.n}</b> [${s.e}]<br>${s.c} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`;
-            });
-            document.getElementById('t3').innerHTML = html;
+        function buildShops() {
+            let h1 = ''; upgData.forEach((item, i) => { h1 += `<div class="card"><span><b>${item.n}</b> (+${item.v})<br><span id="u_c_${i}">${upgPrices[i]}</span> 💰</span><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${item.v})">Купить</button></div>`; });
+            document.getElementById('t1').innerHTML = h1;
+            let h2 = ''; petData.forEach((item, i) => { h2 += `<div class="card"><span><b>${item.n}</b> (+${item.v}/с)<br><span id="p_c_${i}">${petPrices[i]}</span> 💰</span><button class="btn" id="p_b_${i}" onclick="buy('p',${i},${item.v})">Купить</button></div>`; });
+            document.getElementById('t2').innerHTML = h2;
+            let h3 = ''; skinData.forEach((item, i) => { h3 += `<div class="card"><span><b>${item.n}</b> [${item.e}]<br>${item.c} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
+            document.getElementById('t3').innerHTML = h3;
         }
 
         function tClick() {
-            coins += clickPower * (reb > 0 ? reb * 3 : 1); clks++;
-            if (clks >= lvl * 50) { lvl++; clks = 0; clickPower += 2; alert("🎉 Уровень повышен до " + lvl + "!"); }
+            coins += clickPower * (reb > 0 ? reb * 2 : 1); clks++;
+            if (clks >= lvl * 50) { lvl++; clks = 0; clickPower += 2; alert("🎉 Уровень повышен!"); }
             save(); ui();
         }
 
-        function buy(panel, i, val, mode) {
-            let arr = panel==='t1'?uPrices : panel==='t2'?pPrices : panel==='t4'?dPrices : bPrices;
+        function buy(type, i, val) {
+            let arr = type === 'u' ? upgPrices : petPrices;
             if (coins >= arr[i]) {
                 coins -= arr[i];
+                if (type === 'u') clickPower += val; else autoIncome += val;
+                arr[i] = Math.floor(arr[i] * 1.5);
+                save(); ui();
+            }
+        }
+
+        function buySkin(i) {
+            let s = skinData[i];
+            if (ownedSkins.includes(i)) { curSkin = s.e; curBg = s.b; applySkin(); save(); return; }
+            if (coins >= s.c) { coins -= s.c; ownedSkins.push(i); curSkin = s.e; curBg = s.b; applySkin(); save(); ui(); }
+        }
+
+        function applySkin() { let c = document.getElementById('core'); c.innerText = curSkin; c.style.background = curBg; }
+
+        function doReb() {
+            if (coins >= 10000) {
+                reb++; coins = 0; clickPower = 1; autoIncome = 0; lvl = 1; clks = 0;
+                upgPrices = upgData.map(i=>i.c); petPrices = petData.map(i=>i.c);
+                save(); ui(); alert("✨ Перерождение выполнено!");
+            }
+        }
+
+        function save() {
+            localStorage.setItem('v_c', coins); localStorage.setItem('v_p', clickPower); localStorage.setItem('v_a', autoIncome);
+            localStorage.setItem('v_l', lvl); localStorage.setItem('v_r', reb); localStorage.setItem('v_k', clks);
+            localStorage.setItem('v_se', curSkin); localStorage.setItem('v_sb', curBg);
+            localStorage.setItem('v_pu', JSON.stringify(upgPrices)); localStorage.setItem('v_pp', JSON.stringify(petPrices));
+            localStorage.setItem('v_so', JSON.stringify(ownedSkins));
+        }
+
+        function resetG() { localStorage.clear(); location.reload(); }
+
+        function ui() {
+            document.getElementById('bal').innerText = coins; document.getElementById('clk').innerText = clickPower * (reb > 0 ? reb * 2 : 1);
+            document.getElementById('cps').innerText = autoIncome; document.getElementById('lvl').innerText = lvl; document.getElementById('reb').innerText = reb;
+            document.getElementById('rBtn').disabled = (coins < 10000);
+            upgPrices.forEach((p, i) => { let b = document.getElementById(`u_b_${i}`); if(b){ b.disabled = (coins<p); document.getElementById(`u_c_${i}`).innerText = p; } });
+            petPrices.forEach((p, i) => { let b = document.getElementById(`p_b_${i}`); if(b){ b.disabled = (coins<p); document.getElementById(`p_c_${i}`).innerText = p; } });
+            skinData.forEach((s, i) => { let b = document.getElementById(`s_b_${i}`); if(b){ if(ownedSkins.includes(i)){ b.innerText="Надеть"; b.style.background="#10b981"; } else b.disabled=(coins<s.c); } });
+        }
+
+        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; save(); ui(); } }, 1000);
+
+        buildShops(); applySkin(); ui();
+    </script>
+</body>
+</html>
