@@ -42,7 +42,7 @@
         <div class="col" style="border-top: 3px solid #10b981;">
             <h3 style="color:#10b981;">👨‍💻 Разработчики</h3>
             <div class="dev-card"><b>Главный Создатель:</b><div>WETHB1</div><a href="https://t.me" target="_blank" class="dev-link">➡️ Написать в Telegram</a></div>
-            <div class="dev-card"><b>Технический отдел:</b><div>Google ai</div><span style="font-size:12px; color:#9ca3af;">Ручная сборка</span></div>
+            <div class="dev-card"><b>Технический отдел:</b><div>Гугл ИИ</div><span style="font-size:12px; color:#9ca3af;">Ручная сборка</span></div>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
             skinCosts.forEach((c,i)=>{ let b=document.getElementById(`s_b_${i}`); if(b){ if(ownedSkins.includes(i)){ b.innerText="Надет"; b.style.background="#10b981"; b.disabled=false; } else b.disabled=(coins<c); } });
         }
 
-        setInterval(()=>{ if(autoIncome>0){ coins+=autoIncome; save(); ui(); } },1000);
+        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; save(); ui(); } }, 1000);
         buildShops(); ui();
     </script>
 </body>
