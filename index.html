@@ -6,7 +6,7 @@
     <title>Кибер Сфера Эволюции</title>
     <style>
         body { font-family: sans-serif; background: #0a0f1d; color: #fff; margin: 0; padding: 20px; user-select: none; }
-        .main-box { background: #111827; max-width: 500px; margin: 0 auto 20px auto; padding: 20px; border-radius: 16px; border: 2px solid #00f6ff; text-align: center; box-shadow: 0 0 15px rgba(0,246,255,0.2); position: relative; }
+        .main-box { background: #111827; max-width: 500px; margin: 0 auto 20px auto; padding: 20px; border-radius: 16px; border: 2px solid #00f6ff; text-align: center; box-shadow: 0 0 15px rgba(0,246,255,0.2); }
         .money { font-size: 40px; font-weight: bold; color: #00f6ff; margin: 10px 0; }
         .sphere { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(#00f6ff, #7303c0); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 20px #00f6ff; transition: transform 0.05s; }
         .sphere:active { transform: scale(0.93); }
@@ -63,8 +63,6 @@
         </table>
     </div>
 
-    <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
-
     <script>
         const names = {
             u: ["Дата-кабель","Микрочип","Модуль ОЗУ","Процессор","Видеокарта","Блок лазера","Схема питания","Фотонный луч","Квантовый узел","Материя ядро","Модуль ИИ","ДНК-цепочка","Сингулярность","Космос-буст","Импульс X"],
@@ -76,8 +74,11 @@
             {n:"Матрица",e:"📟",b:"linear-gradient(#111,#047857)",c:2000000},{n:"Спектр",e:"👁️",b:"#4c0519",c:5000000},{n:"Пустота",e:"🌀",b:"#000",c:15000000},{n:"Агент",e:"🕵️‍♂️",b:"#1e1b4b",c:50000000},{n:"Король Сети",e:"👑",b:"#701a75",c:200000000}
         ];
 
-        let nick = localStorage.getItem('v_nick') || prompt("Введите ваш никнейм для Кибер-Таблицы:") || "Игрок";
-        localStorage.setItem('v_nick', nick);
+        let nick = localStorage.getItem('v_nick');
+        if (!nick) {
+            nick = prompt("Введите ваш никнейм для Кибер-Таблицы:") || "Игрок_" + Math.floor(Math.random()*100);
+            localStorage.setItem('v_nick', nick);
+        }
 
         let coins = Number(localStorage.getItem('v_c')) || 0;
         let clickPower = Number(localStorage.getItem('v_p')) || 1;
@@ -95,10 +96,8 @@
         function buildShops() {
             let h1 = ''; names.u.forEach((name, i) => { let v = (i+1)*1; h1 += `<div class="card"><div class="card-info"><b>${name}</b> (+${v})<div class="card-cost" id="u_c_${i}">Цена: ${uPrices[i]}</div></div><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${v})">Купить</button></div>`; });
             document.getElementById('t1').innerHTML = h1;
-            
-            let h2 = ''; names.r.forEach((name, i) => { let v = (i+1)*2; h2 += `<div class="card"><div class="card-info"><b>${name}</b> (+${v}/с)<div class="card-cost" id="p_c_${i}">Цена: ${rPrices[i]}</div></div><button class="btn" id="p_b_${i}" onclick="buy('p',${i},${v})">Купить</button></div>`; });
+            let h2 = ''; names.r.forEach((name, i) => { let v = (i+1)*2; h2 += `<div class="card"><div class="card-info"><b>${name}</b> (+${v}/с)<div class="card-cost" id="p_c_${i}">Цена: ${rPrices[i]}</div></div><button class="btn" id="p_b_${i}" onclick="buy('r',${i},${v})">Купить</button></div>`; });
             document.getElementById('t2').innerHTML = h2;
-            
             let h3 = ''; skins.forEach((s, i) => { h3 += `<div class="card"><div class="card-info"><b>${s.n}</b> [${s.e}]<div class="card-cost">Цена: ${s.c}</div></div><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
             document.getElementById('t3').innerHTML = h3;
         }
@@ -130,7 +129,7 @@
             if (coins >= 15000) {
                 reb++; coins = 0; clickPower = 1; autoIncome = 0; lvl = 1; clks = 0;
                 uPrices = Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i))); rPrices = Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i)));
-                save(); ui(); alert("✨ Перерождение!");
+                save(); ui(); alert("✨ Перерождение успешно!");
             }
         }
 
