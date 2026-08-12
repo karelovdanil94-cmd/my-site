@@ -35,49 +35,106 @@
     </div>
 
     <div class="columns">
-        <div class="col" style="border-top: 3px solid #00f6ff;"><h3 style="color:#00f6ff;">⚡ Апгрейды клика</h3><div id="t1"></div></div>
-        <div class="col" style="border-top: 3px solid #ec38bc;"><h3 style="color:#ec38bc;">🤖 Роботы (Авто)</h3><div id="t2"></div></div>
-        <div class="col" style="border-top: 3px solid #f59e0b;"><h3 style="color:#f59e0b;">🎨 Скины сферы</h3><div id="t3"></div></div>
+        <!-- СТОЛБИК 1: АПГРЕЙДЫ -->
+        <div class="col" style="border-top: 3px solid #00f6ff;">
+            <h3 style="color:#00f6ff;">⚡ Апгрейды клика</h3>
+            <div class="card"><span><b>Дата-кабель (+1)</b><br><span id="u_c_0">10</span> 💰</span><button class="btn" id="u_b_0" onclick="buy('u',0,1)">Купить</button></div>
+            <div class="card"><span><b>Микрочип (+2)</b><br><span id="u_c_1">50</span> 💰</span><button class="btn" id="u_b_1" onclick="buy('u',1,2)">Купить</button></div>
+            <div class="card"><span><b>Модуль ОЗУ (+3)</b><br><span id="u_c_2">250</span> 💰</span><button class="btn" id="u_b_2" onclick="buy('u',2,3)">Купить</button></div>
+            <div class="card"><span><b>Процессор (+4)</b><br><span id="u_c_3">1000</span> 💰</span><button class="btn" id="u_b_3" onclick="buy('u',3,4)">Купить</button></div>
+            <div class="card"><span><b>Видеокарта (+5)</b><br><span id="u_c_4">4000</span> 💰</span><button class="btn" id="u_b_4" onclick="buy('u',4,5)">Купить</button></div>
+        </div>
+
+        <!-- СТОЛБИК 2: РОБОТЫ -->
+        <div class="col" style="border-top: 3px solid #ec38bc;">
+            <h3 style="color:#ec38bc;">🤖 Роботы (Авто)</h3>
+            <div class="card"><span><b>Бот-Дрон (+2/с)</b><br><span id="p_c_0">20</span> 💰</span><button class="btn" id="p_b_0" onclick="buy('r',0,2)">Купить</button></div>
+            <div class="card"><span><b>Майнер (+4/с)</b><br><span id="p_c_1">150</span> 💰</span><button class="btn" id="p_b_1" onclick="buy('r',1,4)">Купить</button></div>
+            <div class="card"><span><b>ИИ-Ассистент (+6/с)</b><br><span id="p_c_2">600</span> 💰</span><button class="btn" id="p_b_2" onclick="buy('r',2,6)">Купить</button></div>
+            <div class="card"><span><b>Серверная (+8/с)</b><br><span id="p_c_3">2500</span> 💰</span><button class="btn" id="p_b_3" onclick="buy('r',3,8)">Купить</button></div>
+            <div class="card"><span><b>Генератор (+10/с)</b><br><span id="p_c_4">10000</span> 💰</span><button class="btn" id="p_b_4" onclick="buy('r',4,10)">Купить</button></div>
+        </div>
+
+        <!-- СТОЛБИК 3: СКИНЫ -->
+        <div class="col" style="border-top: 3px solid #f59e0b;">
+            <h3 style="color:#f59e0b;">🎨 Скины сферы</h3>
+            <div class="card"><span><b>🟢 Изумруд</b><br>100 💰</span><button class="btn" id="s_b_0" onclick="buySkin(0,100,'🟢','#047857')">Купить</button></div>
+            <div class="card"><span><b>👑 Золото</b><br>300 💰</span><button class="btn" id="s_b_1" onclick="buySkin(1,300,'👑','#b45309')">Купить</button></div>
+            <div class="card"><span><b>🔥 Магма</b><br>1000 💰</span><button class="btn" id="s_b_2" onclick="buySkin(2,1000,'🔥','linear-gradient(#f97316,#b91c1c)')">Купить</button></div>
+            <div class="card"><span><b>❄️ Лёд</b><br>5000 💰</span><button class="btn" id="s_b_3" onclick="buySkin(3,5000,'❄️','linear-gradient(#06b6d4,#1d4ed8)')">Купить</button></div>
+            <div class="card"><span><b>🌌 Космос</b><br>12000 💰</span><button class="btn" id="s_b_4" onclick="buySkin(4,12000,'🌌','#03001e')">Купить</button></div>
+        </div>
         
+        <!-- СТОЛБИК 4: РАЗРАБОТЧИКИ -->
         <div class="col" style="border-top: 3px solid #10b981;">
             <h3 style="color:#10b981;">👨‍💻 Разработчики</h3>
             <div class="dev-card"><b>Главный Создатель:</b><div>WETHB1</div><a href="https://t.me" target="_blank" class="dev-link">➡️ Написать в Telegram</a></div>
-            <div class="dev-card"><b>Технический отдел:</b><div>Гугл ИИ</div><span style="font-size:12px; color:#9ca3af;">Ручная сборка</span></div>
+            <div class="dev-card"><b>Технический отдел:</b><div>Cyber Bot ИИ</div><span style="font-size:12px; color:#9ca3af;">Автоматическая сборка</span></div>
         </div>
     </div>
 
     <script>
-        const skinList = ["🟢 Изумруд","👑 Золото","🔥 Магма","❄️ Лёд","🌌 Космос","🔴 Рубин","🔷 Сапфир","🔮 Аметист","🌑 Затмение","🌈 Радуга","📟 Матрица","👁️ Спектр","🌀 Пустота","🤖 Агент","👑 Король"];
-        const skinCosts =;
+        let coins = Number(localStorage.getItem('v_c')) || 0;
+        let clickPower = Number(localStorage.getItem('v_p')) || 1;
+        let autoIncome = Number(localStorage.getItem('v_a')) || 0;
+        let lvl = Number(localStorage.getItem('v_l')) || 1;
+        let reb = Number(localStorage.getItem('v_r')) || 0;
+        let clks = Number(localStorage.getItem('v_k')) || 0;
+        let curSkin = localStorage.getItem('v_se') || '⭐';
+        let curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
 
-        let coins = Number(localStorage.getItem('v_c')) || 0, clickPower = Number(localStorage.getItem('v_p')) || 1, autoIncome = Number(localStorage.getItem('v_a')) || 0;
-        let lvl = Number(localStorage.getItem('v_l')) || 1, reb = Number(localStorage.getItem('v_r')) || 0, clks = Number(localStorage.getItem('v_k')) || 0;
-        let uPrices = JSON.parse(localStorage.getItem('v_pu')) || Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i))), rPrices = JSON.parse(localStorage.getItem('v_pp')) || Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i))), ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
+        let uPrices = JSON.parse(localStorage.getItem('v_pu')) ||;
+        let rPrices = JSON.parse(localStorage.getItem('v_pp')) ||;
+        let ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
 
-        function buildShops() {
-            let h1='', h2='', h3='';
-            for(let i=0;i<15;i++){ h1+=`<div class="card"><span><b>Апгрейд ${i+1}</b> (+${i+1})<br><span id="u_c_${i}">${uPrices[i]}</span> 💰</span><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${i+1})">Купить</button></div>`; }
-            for(let i=0;i<15;i++){ h2+=`<div class="card"><span><b>Робот ${i+1}</b> (+${(i+1)*2}/с)<br><span id="p_c_${i}">${rPrices[i]}</span> 💰</span><button class="btn" id="p_b_${i}" onclick="buy('r',${i},${(i+1)*2})">Купить</button></div>`; }
-            skinList.forEach((s,i)=>{ h3+=`<div class="card"><span><b>${s}</b><br>${skinCosts[i]} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
-            document.getElementById('t1').innerHTML=h1; document.getElementById('t2').innerHTML=h2; document.getElementById('t3').innerHTML=h3;
+        function tClick() {
+            coins += clickPower * (reb > 0 ? reb * 2 : 1); clks++;
+            if (clks >= lvl * 50) { lvl++; clks = 0; clickPower += 2; alert("🎉 Уровень повышен!"); }
+            save(); ui();
         }
 
-        function tClick() { coins += clickPower * (reb > 0 ? reb * 2 : 1); clks++; if(clks>=lvl*50){ lvl++; clks=0; clickPower+=2; alert("🎉 Уровень повышен!"); } save(); ui(); }
-        function buy(t,i,v) { let a=t==='u'?uPrices:rPrices; if(coins>=a[i]){ coins-=a[i]; if(t==='u')clickPower+=v; else autoIncome+=v; a[i]=Math.floor(a[i]*1.45); save(); ui(); } }
-        function buySkin(i) { if(ownedSkins.includes(i)){ alert("Скин надет!"); return; } if(coins>=skinCosts[i]){ coins-=skinCosts[i]; ownedSkins.push(i); save(); ui(); } }
-        function doReb() { if(coins>=10000){ reb++; coins=0; clickPower=1; autoIncome=0; lvl=1; clks=0; uPrices=Array.from({length:15},(_,i)=>Math.floor(10*Math.pow(2.9,i))); rPrices=Array.from({length:15},(_,i)=>Math.floor(20*Math.pow(3.0,i))); save(); ui(); alert("✨ Перерождение!"); } }
-        function save() { localStorage.setItem('v_c',coins); localStorage.setItem('v_p',clickPower); localStorage.setItem('v_a',autoIncome); localStorage.setItem('v_l',lvl); localStorage.setItem('v_r',reb); localStorage.setItem('v_k',clks); localStorage.setItem('v_pu',JSON.stringify(uPrices)); localStorage.setItem('v_pp',JSON.stringify(rPrices)); localStorage.setItem('v_so',JSON.stringify(ownedSkins)); }
+        function buy(t, i, v) {
+            let a = t === 'u' ? uPrices : rPrices;
+            if (coins >= a[i]) {
+                coins -= a[i];
+                if (t === 'u') clickPower += v; else autoIncome += v;
+                a[i] = Math.floor(a[i] * 1.5);
+                save(); ui();
+            }
+        }
+
+        function buySkin(i, cost, emo, bg) {
+            if (ownedSkins.includes(i)) { curSkin = emo; curBg = bg; applySkin(); save(); return; }
+            if (coins >= cost) { coins -= cost; ownedSkins.push(i); curSkin = emo; curBg = bg; applySkin(); save(); ui(); }
+        }
+
+        function applySkin() { let c = document.getElementById('core'); c.innerText = curSkin; c.style.background = curBg; }
+        
+        function doReb() {
+            if (coins >= 10000) {
+                reb++; coins = 0; clickPower = 1; autoIncome = 0; lvl = 1; clks = 0;
+                uPrices =; rPrices =;
+                save(); ui(); alert("✨ Перерождение!");
+            }
+        }
+
+        function save() {
+            localStorage.setItem('v_c', coins); localStorage.setItem('v_p', clickPower); localStorage.setItem('v_a', autoIncome);
+            localStorage.setItem('v_l', lvl); localStorage.setItem('v_r', reb); localStorage.setItem('v_k', clks);
+            localStorage.setItem('v_se', curSkin); localStorage.setItem('v_sb', curBg);
+            localStorage.setItem('v_pu', JSON.stringify(uPrices)); localStorage.setItem('v_pp', JSON.stringify(rPrices));
+            localStorage.setItem('v_so', JSON.stringify(ownedSkins));
+        }
+
         function resetG() { localStorage.clear(); location.reload(); }
 
         function ui() {
-            document.getElementById('bal').innerText=coins; document.getElementById('clk').innerText=clickPower*(reb>0?reb*2:1); document.getElementById('cps').innerText=autoIncome; document.getElementById('lvl').innerText=lvl; document.getElementById('reb').innerText=reb; document.getElementById('rBtn').disabled=(coins<10000);
-            uPrices.forEach((p,i)=>{ let b=document.getElementById(`u_b_${i}`); if(b){ b.disabled=(coins<p); document.getElementById(`u_c_${i}`).innerText=p; } });
-            rPrices.forEach((p,i)=>{ let b=document.getElementById(`p_b_${i}`); if(b){ b.disabled=(coins<p); document.getElementById(`p_c_${i}`).innerText=p; } });
-            skinCosts.forEach((c,i)=>{ let b=document.getElementById(`s_b_${i}`); if(b){ if(ownedSkins.includes(i)){ b.innerText="Надет"; b.style.background="#10b981"; b.disabled=false; } else b.disabled=(coins<c); } });
-        }
-
-        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; save(); ui(); } }, 1000);
-        buildShops(); ui();
-    </script>
-</body>
-</html>
+            document.getElementById('bal').innerText = coins;
+            document.getElementById('clk').innerText = clickPower * (reb > 0 ? reb * 2 : 1);
+            document.getElementById('cps').innerText = autoIncome;
+            document.getElementById('lvl').innerText = lvl;
+            document.getElementById('reb').innerText = reb;
+            document.getElementById('rBtn').disabled = (coins < 10000);
+            
+            for(let i=0; i<5; i++) {
+                let bu = document.getElementById(`u_b_${i}`); if(bu) bu.disabled = (coins < uPrices[i]);
