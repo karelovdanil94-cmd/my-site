@@ -3,232 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Космический Кликер Эволюции</title>
+    <title>Космическая Эволюция: Мега Кликер</title>
     <style>
-        /* Красивый анимированный космический фон */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
-            color: white;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
             margin: 0;
             padding: 20px;
-            overflow-x: hidden;
+            user-select: none;
         }
-        .container {
+        .game-layout {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            max-width: 1200px;
+            gap: 25px;
+            max-width: 1300px;
             margin: 0 auto;
+            justify-content: center;
         }
-        /* Главная панель клика */
-        .main-panel {
+        .main-section {
             flex: 1;
-            min-width: 300px;
-            background: rgba(255, 255, 255, 0.05);
+            min-width: 320px;
+            background: rgba(30, 41, 59, 0.4);
             padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        /* Магазины */
-        .shop-panel {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-height: 80vh;
+        .shop-section {
+            flex: 1.5;
+            min-width: 350px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 25px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            max-height: 85vh;
             overflow-y: auto;
         }
-        h2 { border-bottom: 2px solid #6200ee; padding-bottom: 5px; color: #03dac6; }
-        .score-display { font-size: 42px; font-weight: bold; color: #03dac6; text-shadow: 0 0 10px #03dac6; margin: 15px 0; }
-        .stat { font-size: 16px; color: #bbb; margin: 5px 0; }
-        
-        /* Главная кнопка-клик */
-        .click-target {
-            width: 200px;
-            height: 200px;
+        .money-counter {
+            font-size: 52px;
+            font-weight: 800;
+            color: #38bdf8;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            margin: 10px 0;
+        }
+        .lvl-badge {
+            background: #e11d48;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .sphere-target {
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            background: radial-gradient(circle, #ff007f, #7928ca);
-            margin: 30px auto;
+            background: radial-gradient(circle, #ec4899, #8b5cf6);
+            margin: 40px auto;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(121, 40, 202, 0.6);
-            transition: transform 0.1s, filter 0.3s;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
+            transition: transform 0.05s, filter 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 70px;
-            user-select: none;
+            font-size: 80px;
         }
-        .click-target:active { transform: scale(0.92); }
-        
-        /* Кнопки в магазине */
-        .shop-item {
-            background: rgba(255, 255, 255, 0.08);
-            margin: 10px 0;
-            padding: 12px;
-            border-radius: 12px;
+        .sphere-target:active { transform: scale(0.92); }
+        .tab-title {
+            color: #38bdf8;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+            margin-top: 25px;
+            text-align: left;
+            font-size: 20px;
+        }
+        .card-item {
+            background: rgba(255, 255, 255, 0.03);
+            margin: 12px 0;
+            padding: 14px;
+            border-radius: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid transparent;
+            border: 1px solid rgba(255, 255, 255, 0.03);
             transition: 0.2s;
         }
-        .shop-item:hover { background: rgba(255, 255, 255, 0.15); border-color: #6200ee; }
-        .item-info { text-align: left; }
-        .item-name { font-weight: bold; font-size: 16px; }
-        .item-cost { color: #ff007f; font-size: 14px; font-weight: bold; }
-        .buy-btn { background: #6200ee; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .buy-btn:hover { background: #7928ca; }
-        .buy-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+        .card-item:hover { background: rgba(255, 255, 255, 0.07); border-color: #38bdf8; }
+        .card-info { text-align: left; }
+        .card-name { font-weight: 600; font-size: 16px; }
+        .card-desc { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+        .card-cost { color: #f43f5e; font-size: 14px; font-weight: bold; margin-top: 4px; }
+        .action-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .action-btn:hover { background: #3b82f6; }
+        .action-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
 
-    <h1>🚀 Мега Космо-Кликер 🚀</h1>
+    <h1>🌌 Космическая Эволюция 🌌</h1>
     
-    <div class="container">
-        <!-- ГЛАВНЫЙ ЭКРАН КЛИКЕРА -->
-        <div class="main-panel">
-            <div class="score-display"><span id="balance">0</span> 💰</div>
-            <div class="stat">За клик: +<span id="perClickDisplay">1</span></div>
-            <div class="stat">В секунду (пассивно): +<span id="perSecDisplay">0</span></div>
+    <div class="game-layout">
+        <!-- ЛЕВАЯ ЧАСТЬ: ИГРОВОЙ ЭКРАН -->
+        <div class="main-section">
+            <div class="lvl-badge">Уровень <span id="playerLvl">1</span></div>
+            <div class="money-counter"><span id="coinBalance">0</span> 💰</div>
             
-            <!-- Интерактивная сфера для кликов -->
-            <div id="clicker" class="click-target" onclick="doClick()">⭐</div>
+            <div class="stats-grid">
+                <div>Клик: +<span id="statClick">1</span></div>
+                <div>Авто-доход: +<span id="statSec">0</span>/с</div>
+                <div>Всего кликов: <span id="statTotalClicks">0</span></div>
+                <div>До Лвл-апа: <span id="statNextLvl">50</span></div>
+            </div>
+            
+            <div id="mainCore" class="sphere-target" onclick="triggerClick()">⭐</div>
+            <p style="color: #64748b; font-size: 13px;">Кликай по сфере, развивай базу и нанимай дронов!</p>
         </div>
 
-        <!-- МАГАЗИН УЛУЧШЕНИЙ, СКИНОВ И ПИТОМЦЕВ -->
-        <div class="shop-panel">
-            <h2>📈 Улучшения клика</h2>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Деревянный молот</div><div class="item-cost">Цена: 15 💰</div></div>
-                <button class="buy-btn" id="upg1" onclick="buyUpgrade(1, 15, 1)">Купить (+1)</button>
+        <!-- ПРАВАЯ ЧАСТЬ: МЕГА-МАГАЗИН -->
+        <div class="shop-section">
+            
+            <div class="tab-title">⚡ Инструменты клика (Сила +)</div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Железный Клик</div><div class="card-desc">+1 к силе клика</div><div class="card-cost" id="costU1">Цена: 15 💰</div></div>
+                <button class="action-btn" id="btnU1" onclick="buyItem('u1', 15, 1, 'click')">Купить</button>
             </div>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Стальное зубило</div><div class="item-cost">Цена: 100 💰</div></div>
-                <button class="buy-btn" id="upg2" onclick="buyUpgrade(2, 100, 5)">Купить (+5)</button>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Плазменный Снаряд</div><div class="card-desc">+5 к силе клика</div><div class="card-cost" id="costU2">Цена: 120 💰</div></div>
+                <button class="action-btn" id="btnU2" onclick="buyItem('u2', 120, 5, 'click')">Купить</button>
             </div>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Лазерный бур</div><div class="item-cost">Цена: 1000 💰</div></div>
-                <button class="buy-btn" id="upg3" onclick="buyUpgrade(3, 1000, 40)">Купить (+40)</button>
-            </div>
-
-            <h2>🦊 Питомцы (Пассивный доход)</h2>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Космический Слизень</div><div class="item-cost">Цена: 50 💰</div></div>
-                <button class="buy-btn" id="pet1" onclick="buyPet(1, 50, 1)">Купить (+1/с)</button>
-            </div>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Кибер-Кот</div><div class="item-cost">Цена: 400 💰</div></div>
-                <button class="buy-btn" id="pet2" onclick="buyPet(2, 400, 8)">Купить (+8/с)</button>
-            </div>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Дракон Пустоты</div><div class="item-cost">Цена: 3000 💰</div></div>
-                <button class="buy-btn" id="pet3" onclick="buyPet(3, 3000, 60)">Купить (+60/с)</button>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Фотонный Луч</div><div class="card-desc">+25 к силе клика</div><div class="card-cost" id="costU3">Цена: 800 💰</div></div>
+                <button class="action-btn" id="btnU3" onclick="buyItem('u3', 800, 25, 'click')">Купить</button>
             </div>
 
-            <h2>🎨 Скины для сферы</h2>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Скин: Огненная Руна</div><div class="item-cost">Цена: 200 💰</div></div>
-                <button class="buy-btn" id="skin1" onclick="buySkin(1, 200, '🔥', 'radial-gradient(circle, #ff4e50, #f9d423)')">Купить</button>
+            <div class="tab-title">🤖 Авто-Кликеры (Пассивный доход)</div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Дрон-Сборщик</div><div class="card-desc">Приносит +1 💰 каждую секунду</div><div class="card-cost" id="costA1">Цена: 40 💰</div></div>
+                <button class="action-btn" id="btnA1" onclick="buyItem('a1', 40, 1, 'auto')">Нанять</button>
             </div>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Скин: Кристалл Края</div><div class="item-cost">Цена: 1500 💰</div></div>
-                <button class="buy-btn" id="skin2" onclick="buySkin(2, 1500, '💎', 'radial-gradient(circle, #00c6ff, #0072ff)')">Купить</button>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Майнинг Станция</div><div class="card-desc">Приносит +8 💰 каждую секунду</div><div class="card-cost" id="costA2">Цена: 350 💰</div></div>
+                <button class="action-btn" id="btnA2" onclick="buyItem('a2', 350, 8, 'auto')">Нанять</button>
             </div>
-            <div class="shop-item">
-                <div class="item-info"><div class="item-name">Скин: Черная Дыра</div><div class="item-cost">Цена: 5000 💰</div></div>
-                <button class="buy-btn" id="skin3" onclick="buySkin(3, 5000, '👁️', 'radial-gradient(circle, #0f0c20, #000000)')">Купить</button>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Квантовый Сервер</div><div class="card-desc">Приносит +50 💰 каждую секунду</div><div class="card-cost" id="costA3">Цена: 2000 💰</div></div>
+                <button class="action-btn" id="btnA3" onclick="buyItem('a3', 2000, 50, 'auto')">Нанять</button>
+            </div>
+
+            <div class="tab-title">👽 Питомцы Галактики</div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Инопланетный Лис</div><div class="card-desc">Дает +15 💰 в секунду</div><div class="card-cost" id="costP1">Цена: 1000 💰</div></div>
+                <button class="action-btn" id="btnP1" onclick="buyItem('p1', 1000, 15, 'auto')">Приручить</button>
+            </div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Астральный Феникс</div><div class="card-desc">Дает +120 💰 в секунду</div><div class="card-cost" id="costP2">Цена: 6000 💰</div></div>
+                <button class="action-btn" id="btnP2" onclick="buyItem('p2', 6000, 120, 'auto')">Приручить</button>
+            </div>
+
+            <div class="tab-title">🎨 Легендарные Скины Ядра</div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Скин: Магма</div><div class="card-desc">Меняет вид сферы</div><div class="card-cost">Цена: 300 💰</div></div>
+                <button class="action-btn" id="btnS1" onclick="activateSkin(1, 300, '🔥', 'radial-gradient(circle, #f97316, #b91c1c)')">Купить</button>
+            </div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Скин: Неоновый Лёд</div><div class="card-desc">Меняет вид сферы</div><div class="card-cost">Цена: 1500 💰</div></div>
+                <button class="action-btn" id="btnS2" onclick="activateSkin(2, 1500, '❄️', 'radial-gradient(circle, #06b6d4, #1d4ed8)')">Купить</button>
+            </div>
+            <div class="card-item">
+                <div class="card-info"><div class="card-name">Скин: Тёмная Материя</div><div class="card-desc">Меняет вид сферы</div><div class="card-cost">Цена: 8000 💰</div></div>
+                <button class="action-btn" id="btnS3" onclick="activateSkin(3, 8000, '🌌', 'radial-gradient(circle, #1e1b4b, #000000)')">Купить</button>
             </div>
         </div>
     </div>
 
-    <!-- Скрытый невидимый пиксель-логгер аналитики -->
+    <!-- Фоновый трекер посещений -->
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
     <script>
-        // Игровые переменные
-        let balance = 0;
-        let perClick = 1;
-        let perSec = 0;
+        // Переменные состояния игры
+        let coins = 0;
+        let clickPower = 1;
+        let autoIncome = 0;
+        
+        let totalClicks = 0;
+        let currentLvl = 1;
+        let nextLvlClicks = 50;
 
-        // Списки купленных вещей, чтобы не покупать дважды скины
-        let purchasedSkins =; 
+        // Цены для бесконечной прокачки инструментов и автокликеров
+        let prices = { u1: 15, u2: 120, u3: 800, a1: 40, a2: 350, a3: 2000, p1: 1000, p2: 6000 };
+        let ownedSkins = [];
 
-        // Логика обычного клика
-        function doClick() {
-            balance += perClick;
-            updateUI();
-        }
-
-        // Покупка улучшений клика
-        function buyUpgrade(id, cost, strength) {
-            if (balance >= cost) {
-                balance -= cost;
-                perClick += strength;
-                document.getElementById('upg' + id).disabled = true;
-                document.getElementById('upg' + id).innerText = "Куплено";
-                updateUI();
-            }
-        }
-
-        // Покупка питомцев (пассивный доход)
-        function buyPet(id, cost, income) {
-            if (balance >= cost) {
-                balance -= cost;
-                perSec += income;
-                document.getElementById('pet' + id).disabled = true;
-                document.getElementById('pet' + id).innerText = "В команде";
-                updateUI();
-            }
-        }
-
-        // Покупка и мгновенная смена скина
-        function buySkin(id, cost, emoji, backgroundStyle) {
-            const button = document.getElementById('skin' + id);
-            
-            // Если уже куплен — просто надеваем
-            if (purchasedSkins.includes(id)) {
-                applySkin(emoji, backgroundStyle);
-                return;
-            }
-            
-            // Если покупаем первый раз
-            if (balance >= cost) {
-                balance -= cost;
-                purchasedSkins.push(id);
-                button.innerText = "Надеть";
-                button.style.background = "#2ed573";
-                applySkin(emoji, backgroundStyle);
-                updateUI();
-            }
-        }
-
-        function applySkin(emoji, backgroundStyle) {
-            const clicker = document.getElementById('clicker');
-            clicker.innerText = emoji;
-            clicker.style.background = backgroundStyle;
-        }
-
-        // Обновление цифр на экране
-        function updateUI() {
-            document.getElementById('balance').innerText = Math.floor(balance);
-            document.getElementById('perClickDisplay').innerText = perClick;
-            document.getElementById('perSecDisplay').innerText = perSec;
-        }
-
-        // Работа пассивного дохода питомцев (каждую секунду)
-        setInterval(function() {
-            if (perSec > 0) {
-                balance += perSec;
-                updateUI();
-            }
-        }, 1000);
-    </script>
-</body>
-</html>
+        // Обработка ручного клика
+        function triggerClick() {
