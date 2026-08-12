@@ -19,15 +19,11 @@
         .btn { background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn:disabled { background: #4b5563; color: #9ca3af; cursor: not-allowed; }
         .action-btn { background: #10b981; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 5px; }
-        
-        /* Таблица лидеров */
-        .leader-box { max-width: 450px; margin: 20px auto 0 auto; background: #111827; border: 2px solid #38bdf8; border-radius: 12px; padding: 15px; text-align: left; }
+        .leader-box { max-width: 600px; margin: 25px auto; background: #111827; border: 2px solid #38bdf8; border-radius: 12px; padding: 15px; text-align: left; box-shadow: 0 0 15px rgba(56,189,248,0.1); }
         .leader-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
-        .leader-table th, .leader-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #374151; }
+        .leader-table th, .leader-table td { padding: 8px; text-align: left; border-bottom: 1px solid #374151; }
         .leader-table th { color: #38bdf8; }
         .me { color: #10b981; font-weight: bold; }
-        .scrim-btn { width: 8px; height: 8px; background: transparent; border: none; position: absolute; bottom: 4px; left: 4px; cursor: pointer; }
-        #scrim { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999; justify-content: center; align-items: center; font-size: 140px; }
     </style>
 </head>
 <body>
@@ -40,20 +36,6 @@
         <div id="core" class="sphere" onclick="tClick()">⭐</div>
         <button class="action-btn" id="rBtn" onclick="doReb()">✨ Перерождение (Цена: 15К 💰)</button>
         <button class="action-btn" style="background:#ef4444;" onclick="resetG()">Сброс</button>
-        <button class="scrim-btn" onclick="triggerScrim()"></button>
-
-        <!-- ВСТРОЕННАЯ ТАБЛИЦА ЛИДЕРОВ -->
-        <div class="leader-box">
-            <h3 style="margin:0; color:#00f6ff; text-align: center; font-size: 16px;">🏆 Онлайн Таблица Лидеров</h3>
-            <table class="leader-table">
-                <thead>
-                    <tr><th>Место</th><th>Игрок</th><th>Баланс</th></tr>
-                </thead>
-                <tbody id="leadBody">
-                    <tr><td colspan="3" style="text-align:center; color:#666;">Загрузка топа...</td></tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 
     <div class="columns">
@@ -71,7 +53,16 @@
         </div>
     </div>
 
-    <div id="scrim">💀</div>
+    <div class="leader-box">
+        <h3 style="margin:0; color:#00f6ff; text-align: center;">🏆 Таблица Лидеров Игроков</h3>
+        <table class="leader-table">
+            <thead>
+                <tr><th>Место</th><th>Игрок</th><th>Баланс монет</th></tr>
+            </thead>
+            <tbody id="leadBody"></tbody>
+        </table>
+    </div>
+
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
     <script>
@@ -85,11 +76,8 @@
             {n:"Матрица",e:"📟",b:"linear-gradient(#111,#047857)",c:2000000},{n:"Спектр",e:"👁️",b:"#4c0519",c:5000000},{n:"Пустота",e:"🌀",b:"#000",c:15000000},{n:"Агент",e:"🕵️‍♂️",b:"#1e1b4b",c:50000000},{n:"Король Сети",e:"👑",b:"#701a75",c:200000000}
         ];
 
-        let nick = localStorage.getItem('v_nick');
-        if (!nick) {
-            nick = prompt("Введите ваш никнейм для глобальной Таблицы Лидеров:") || "Игрок_" + Math.floor(Math.random()*100);
-            localStorage.setItem('v_nick', nick);
-        }
+        let nick = localStorage.getItem('v_nick') || prompt("Введите ваш никнейм для Кибер-Таблицы:") || "Игрок";
+        localStorage.setItem('v_nick', nick);
 
         let coins = Number(localStorage.getItem('v_c')) || 0;
         let clickPower = Number(localStorage.getItem('v_p')) || 1;
@@ -107,8 +95,10 @@
         function buildShops() {
             let h1 = ''; names.u.forEach((name, i) => { let v = (i+1)*1; h1 += `<div class="card"><div class="card-info"><b>${name}</b> (+${v})<div class="card-cost" id="u_c_${i}">Цена: ${uPrices[i]}</div></div><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${v})">Купить</button></div>`; });
             document.getElementById('t1').innerHTML = h1;
-            let h2 = ''; names.r.forEach((name, i) => { let v = (i+1)*2; h2 += `<div class="card"><div class="card-info"><b>${name}</b> (+${v}/с)<div class="card-cost" id="p_c_${i}">Цена: ${rPrices[i]}</div></div><button class="btn" id="p_b_${i}" onclick="buy('p',${i},v)">Купить</button></div>`; });
+            
+            let h2 = ''; names.r.forEach((name, i) => { let v = (i+1)*2; h2 += `<div class="card"><div class="card-info"><b>${name}</b> (+${v}/с)<div class="card-cost" id="p_c_${i}">Цена: ${rPrices[i]}</div></div><button class="btn" id="p_b_${i}" onclick="buy('p',${i},${v})">Купить</button></div>`; });
             document.getElementById('t2').innerHTML = h2;
+            
             let h3 = ''; skins.forEach((s, i) => { h3 += `<div class="card"><div class="card-info"><b>${s.n}</b> [${s.e}]<div class="card-cost">Цена: ${s.c}</div></div><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
             document.getElementById('t3').innerHTML = h3;
         }
@@ -145,3 +135,11 @@
         }
 
         function save() {
+            localStorage.setItem('v_c', coins); localStorage.setItem('v_p', clickPower); localStorage.setItem('v_a', autoIncome); localStorage.setItem('v_l', lvl); localStorage.setItem('v_r', reb); localStorage.setItem('v_k', clks); localStorage.setItem('v_se', curSkin); localStorage.setItem('v_sb', curBg);
+            localStorage.setItem('v_pu', JSON.stringify(uPrices)); localStorage.setItem('v_pp', JSON.stringify(rPrices)); localStorage.setItem('v_so', JSON.stringify(ownedSkins));
+            updateLeaderboard();
+        }
+
+        function resetG() { localStorage.clear(); location.reload(); }
+
+        function ui() {
