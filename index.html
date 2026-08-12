@@ -124,7 +124,6 @@
     <h1>🌌 Космическая Эволюция 🌌</h1>
     
     <div class="game-layout">
-        <!-- ЛЕВАЯ ЧАСТЬ: ИГРОВОЙ ЭКРАН -->
         <div class="main-section">
             <div class="lvl-badge">Уровень <span id="playerLvl">1</span></div>
             <div class="money-counter"><span id="coinBalance">0</span> 💰</div>
@@ -140,45 +139,43 @@
             <p style="color: #64748b; font-size: 13px;">Кликай по сфере, развивай базу и нанимай дронов!</p>
         </div>
 
-        <!-- ПРАВАЯ ЧАСТЬ: МЕГА-МАГАЗИН -->
         <div class="shop-section">
-            
             <div class="tab-title">⚡ Инструменты клика (Сила +)</div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Железный Клик</div><div class="card-desc">+1 к силе клика</div><div class="card-cost" id="costU1">Цена: 15 💰</div></div>
-                <button class="action-btn" id="btnU1" onclick="buyItem('u1', 15, 1, 'click')">Купить</button>
+                <button class="action-btn" id="btnU1" onclick="buyItem('u1', 1, 'click')">Купить</button>
             </div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Плазменный Снаряд</div><div class="card-desc">+5 к силе клика</div><div class="card-cost" id="costU2">Цена: 120 💰</div></div>
-                <button class="action-btn" id="btnU2" onclick="buyItem('u2', 120, 5, 'click')">Купить</button>
+                <button class="action-btn" id="btnU2" onclick="buyItem('u2', 5, 'click')">Купить</button>
             </div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Фотонный Луч</div><div class="card-desc">+25 к силе клика</div><div class="card-cost" id="costU3">Цена: 800 💰</div></div>
-                <button class="action-btn" id="btnU3" onclick="buyItem('u3', 800, 25, 'click')">Купить</button>
+                <button class="action-btn" id="btnU3" onclick="buyItem('u3', 25, 'click')">Купить</button>
             </div>
 
             <div class="tab-title">🤖 Авто-Кликеры (Пассивный доход)</div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Дрон-Сборщик</div><div class="card-desc">Приносит +1 💰 каждую секунду</div><div class="card-cost" id="costA1">Цена: 40 💰</div></div>
-                <button class="action-btn" id="btnA1" onclick="buyItem('a1', 40, 1, 'auto')">Нанять</button>
+                <button class="action-btn" id="btnA1" onclick="buyItem('a1', 1, 'auto')">Нанять</button>
             </div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Майнинг Станция</div><div class="card-desc">Приносит +8 💰 каждую секунду</div><div class="card-cost" id="costA2">Цена: 350 💰</div></div>
-                <button class="action-btn" id="btnA2" onclick="buyItem('a2', 350, 8, 'auto')">Нанять</button>
+                <button class="action-btn" id="btnA2" onclick="buyItem('a2', 8, 'auto')">Нанять</button>
             </div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Квантовый Сервер</div><div class="card-desc">Приносит +50 💰 каждую секунду</div><div class="card-cost" id="costA3">Цена: 2000 💰</div></div>
-                <button class="action-btn" id="btnA3" onclick="buyItem('a3', 2000, 50, 'auto')">Нанять</button>
+                <button class="action-btn" id="btnA3" onclick="buyItem('a3', 50, 'auto')">Нанять</button>
             </div>
 
             <div class="tab-title">👽 Питомцы Галактики</div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Инопланетный Лис</div><div class="card-desc">Дает +15 💰 в секунду</div><div class="card-cost" id="costP1">Цена: 1000 💰</div></div>
-                <button class="action-btn" id="btnP1" onclick="buyItem('p1', 1000, 15, 'auto')">Приручить</button>
+                <button class="action-btn" id="btnP1" onclick="buyItem('p1', 15, 'auto')">Приручить</button>
             </div>
             <div class="card-item">
                 <div class="card-info"><div class="card-name">Астральный Феникс</div><div class="card-desc">Дает +120 💰 в секунду</div><div class="card-cost" id="costP2">Цена: 6000 💰</div></div>
-                <button class="action-btn" id="btnP2" onclick="buyItem('p2', 6000, 120, 'auto')">Приручить</button>
+                <button class="action-btn" id="btnP2" onclick="buyItem('p2', 120, 'auto')">Приручить</button>
             </div>
 
             <div class="tab-title">🎨 Легендарные Скины Ядра</div>
@@ -197,22 +194,26 @@
         </div>
     </div>
 
-    <!-- Фоновый трекер посещений -->
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
     <script>
-        // Переменные состояния игры
         let coins = 0;
         let clickPower = 1;
         let autoIncome = 0;
-        
         let totalClicks = 0;
         let currentLvl = 1;
         let nextLvlClicks = 50;
 
-        // Цены для бесконечной прокачки инструментов и автокликеров
         let prices = { u1: 15, u2: 120, u3: 800, a1: 40, a2: 350, a3: 2000, p1: 1000, p2: 6000 };
         let ownedSkins = [];
 
-        // Обработка ручного клика
         function triggerClick() {
+            coins += clickPower;
+            totalClicks++;
+            if (totalClicks >= nextLvlClicks) {
+                currentLvl++;
+                nextLvlClicks = Math.floor(nextLvlClicks * 2.5);
+                clickPower += 2;
+                alert("🎉 Вы достигли " + currentLvl + " уровня!");
+            }
+            refreshInterface();
