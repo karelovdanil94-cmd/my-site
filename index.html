@@ -21,7 +21,7 @@
         .card-cost { color: #f43f5e; font-weight: bold; }
         .btn { background: #2563eb; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
-        .idea { background: #10b981; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 15px; }
+        .idea { background: #10b981; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 15px; display: inline-block; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -30,93 +30,123 @@
     
     <div class="layout">
         <div class="main-p">
-            <div class="lvl">Уровень <span id="lvlDisplay">1</span></div>
-            <div class="money"><span id="balDisplay">0</span> 💰</div>
-            <div style="font-size:14px; color:#94a3b8; margin-bottom:15px;">Клик: +<span id="clickDisplay">1</span> | Авто: +<span id="secDisplay">0</span>/с</div>
-            <div id="mainCore" class="sphere" onclick="coreClick()">⭐</div>
-            <button class="idea" onclick="addIdea()">💡 Предложить идею</button>
+            <div class="lvl">Уровень <span id="playerLvl">1</span></div>
+            <div class="money"><span id="coinBalance">0</span> 💰</div>
+            <div style="font-size:14px; color:#94a3b8; margin-bottom:15px;">Клик: +<span id="statClick">1</span> | Авто: +<span id="statSec">0</span>/с</div>
+            <div id="mainCore" class="sphere" onclick="triggerClick()">⭐</div>
+            
+            <!-- КНОПКА С ПРЯМОЙ ССЫЛКОЙ НА TELEGRAM -->
+            <button class="idea" onclick="redirectToTelegram()">💡 Предложить идею</button>
         </div>
 
         <div class="shop-p">
             <div class="title">⚡ Сила клика</div>
-            <div class="card"><div class="card-info"><div class="card-name">Железный Клик (+1)</div><div class="card-cost" id="cost_u1">Цена: 15</div></div><button class="btn" id="btn_u1" onclick="buy('u1',1,'click')">Купить</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Плазменный Заряд (+5)</div><div class="card-cost" id="cost_u2">Цена: 120</div></div><button class="btn" id="btn_u2" onclick="buy('u2',5,'click')">Купить</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Фотонный Пульсар (+25)</div><div class="card-cost" id="cost_u3">Цена: 800</div></div><button class="btn" id="btn_u3" onclick="buy('u3',25,'click')">Купить</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Квантовый Молот (+100)</div><div class="card-cost" id="cost_u4">Цена: 4000</div></div><button class="btn" id="btn_u4" onclick="buy('u4',100,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Железный Клик</div><div class="card-cost" id="costU1">Цена: 15</div></div><button class="btn" id="btnU1" onclick="buyItem('u1',1,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Плазменный Заряд</div><div class="card-cost" id="costU2">Цена: 120</div></div><button class="btn" id="btnU2" onclick="buyItem('u2',5,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Фотонный Пульсар</div><div class="card-cost" id="costU3">Цена: 800</div></div><button class="btn" id="btnU3" onclick="buyItem('u3',25,'click')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Квантовый Молот</div><div class="card-cost" id="costU4">Цена: 4000</div></div><button class="btn" id="btnU4" onclick="buyItem('u4',100,'click')">Купить</button></div>
 
             <div class="title">🤖 Автокликеры</div>
-            <div class="card"><div class="card-info"><div class="card-name">Дрон-Сборщик (+1/с)</div><div class="card-cost" id="cost_a1">Цена: 40</div></div><button class="btn" id="btn_a1" onclick="buy('a1',1,'auto')">Нанять</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Станция Генерации (+8/с)</div><div class="card-cost" id="cost_a2">Цена: 350</div></div><button class="btn" id="btn_a2" onclick="buy('a2',8,'auto')">Нанять</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Квантовый Сервер (+50/с)</div><div class="card-cost" id="cost_a3">Цена: 2000</div></div><button class="btn" id="btn_a3" onclick="buy('a3',50,'auto')">Нанять</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Био-Реактор (+300/с)</div><div class="card-cost" id="cost_a4">Цена: 12000</div></div><button class="btn" id="btn_a4" onclick="buy('a4',300,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Дрон-Сборщик</div><div class="card-cost" id="costA1">Цена: 40</div></div><button class="btn" id="btnA1" onclick="buyItem('a1',1,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Станция Генерации</div><div class="card-cost" id="costA2">Цена: 350</div></div><button class="btn" id="btnA2" onclick="buyItem('a2',8,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Квантовый Сервер</div><div class="card-cost" id="costA3">Цена: 2000</div></div><button class="btn" id="btnA3" onclick="buyItem('a3',50,'auto')">Нанять</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Био-Реактор</div><div class="card-cost" id="costA4">Цена: 12000</div></div><button class="btn" id="btnA4" onclick="buyItem('a4',300,'auto')">Нанять</button></div>
 
             <div class="title">🦊 Питомцы и Скины</div>
-            <div class="card"><div class="card-info"><div class="card-name">Космо-Лис (+15/с)</div><div class="card-cost" id="cost_p1">Цена: 1000</div></div><button class="btn" id="btn_p1" onclick="buy('p1',15,'auto')">Приручить</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Астральный Феникс (+120/с)</div><div class="card-cost" id="cost_p2">Цена: 6000</div></div><button class="btn" id="btn_p2" onclick="buy('p2',120,'auto')">Приручить</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Скин: Магма 🔥</div><div class="card-cost">Цена: 300</div></div><button class="btn" id="sk1" onclick="setSkin(1,300,'🔥','radial-gradient(#f97316,#b91c1c)')">Купить</button></div>
-            <div class="card"><div class="card-info"><div class="card-name">Скин: Лёд ❄️</div><div class="card-cost">Цена: 1500</div></div><button class="btn" id="sk2" onclick="setSkin(2,1500,'❄️','radial-gradient(#06b6d4,#1d4ed8)')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Космо-Лис</div><div class="card-cost" id="costP1">Цена: 1000</div></div><button class="btn" id="btnP1" onclick="buyItem('p1',15,'auto')">Приручить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Астральный Феникс</div><div class="card-cost" id="costP2">Цена: 6000</div></div><button class="btn" id="btnP2" onclick="buyItem('p2',120,'auto')">Приручить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Скин: Магма 🔥</div><div class="card-cost">Цена: 300</div></div><button class="btn" id="btnS1" onclick="activateSkin(1,300,'🔥','radial-gradient(#f97316,#b91c1c)')">Купить</button></div>
+            <div class="card"><div class="card-info"><div class="card-name">Скин: Лёд ❄️</div><div class="card-cost">Цена: 1500</div></div><button class="btn" id="btnS2" onclick="activateSkin(2,1500,'❄️','radial-gradient(#06b6d4,#1d4ed8)')">Купить</button></div>
         </div>
     </div>
 
     <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none;width:1px;height:1px;">
 
     <script>
-        let coins = 0, clickPower = 1, autoIncome = 0, totalClicks = 0, currentLvl = 1, nextLvl = 50;
+        let coins = 0;
+        let clickPower = 1;
+        let autoIncome = 0;
+        let totalClicks = 0;
+        let currentLvl = 1;
+        let nextLvlClicks = 50;
+
         let prices = { u1: 15, u2: 120, u3: 800, u4: 4000, a1: 40, a2: 350, a3: 2000, a4: 12000, p1: 1000, p2: 6000 };
         let ownedSkins = [];
 
-        function coreClick() {
-            coins += clickPower; totalClicks++;
-            if (totalClicks >= nextLvl) {
-                currentLvl++; totalClicks = 0; nextLvl = Math.floor(nextLvl * 2.2); clickPower += 2;
-                alert("🎉 Новый Уровень: " + currentLvl + "! Сила клика +2!");
+        function triggerClick() {
+            coins += clickPower;
+            totalClicks++;
+            if (totalClicks >= nextLvlClicks) {
+                currentLvl++;
+                nextLvlClicks = Math.floor(nextLvlClicks * 2.5);
+                clickPower += 2;
+                alert("🎉 Уровень повышен! Новый уровень: " + currentLvl);
             }
-            ui();
+            refreshInterface();
         }
 
-        function buy(id, val, type) {
-            if (coins >= prices[id]) {
-                coins -= prices[id];
-                if (type === 'click') clickPower += val;
-                else autoIncome += val;
-                prices[id] = Math.floor(prices[id] * 1.4);
-                document.getElementById('cost_' + id).innerText = "Цена: " + prices[id];
-                ui();
+        function buyItem(id, value, type) {
+            let currentCost = prices[id];
+            if (coins >= currentCost) {
+                coins -= currentCost;
+                if (type === 'click') {
+                    clickPower += value;
+                } else if (type === 'auto') {
+                    autoIncome += value;
+                }
+                prices[id] = Math.floor(currentCost * 1.4);
+                document.getElementById('cost' + id.toUpperCase()).innerText = "Цена: " + prices[id];
+                refreshInterface();
             }
         }
 
-        function setSkin(skinId, cost, emo, bg) {
-            let btn = document.getElementById('sk' + skinId);
+        function activateSkin(skinId, cost, emojiText, backgroundStyle) {
+            let btn = document.getElementById('btnS' + skinId);
             if (ownedSkins.includes(skinId)) {
-                document.getElementById('mainCore').innerText = emo;
-                document.getElementById('mainCore').style.background = bg;
+                document.getElementById('mainCore').innerText = emojiText;
+                document.getElementById('mainCore').style.background = backgroundStyle;
                 return;
             }
             if (coins >= cost) {
-                coins -= cost; ownedSkins.push(skinId); btn.innerText = "Надеть"; btn.style.background = "#10b981";
-                document.getElementById('mainCore').innerText = emo; document.getElementById('mainCore').style.background = bg;
-                ui();
+                coins -= cost;
+                ownedSkins.push(skinId);
+                btn.innerText = "Надеть";
+                btn.style.background = "#10b981";
+                document.getElementById('mainCore').innerText = emojiText;
+                document.getElementById('mainCore').style.background = backgroundStyle;
+                refreshInterface();
             }
         }
 
-        function addIdea() {
-            let text = prompt("Какую фишку добавить в игру?");
-            if (text) alert("Идея успешно принята на рассмотрение!");
+        // ФУНКЦИЯ ДЛЯ ПЕРЕХОДА В ТЕЛЕГРАМ
+        function redirectToTelegram() {
+            window.location.href = "https://t.me";
         }
 
-        function ui() {
+        function refreshInterface() {
             document.getElementById('coinBalance').innerText = coins;
             document.getElementById('statClick').innerText = clickPower;
             document.getElementById('statSec').innerText = autoIncome;
+            document.getElementById('statTotalClicks').innerText = totalClicks;
             document.getElementById('playerLvl').innerText = currentLvl;
-            for (let k in prices) {
-                let b = document.getElementById('btn_' + k);
-                if (b) b.disabled = (coins < prices[k]);
+            document.getElementById('statNextLvl').innerText = (nextLvlClicks - totalClicks);
+
+            for (let key in prices) {
+                let btn = document.getElementById('btn' + key.toUpperCase());
+                if (btn) {
+                    btn.disabled = (coins < prices[key]);
+                }
             }
         }
 
-        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; ui(); } }, 1000);
-        ui();
+        setInterval(function() {
+            if (autoIncome > 0) {
+                coins += autoIncome;
+                refreshInterface();
+            }
+        }, 1000);
+
+        refreshInterface();
     </script>
 </body>
 </html>
