@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-90 RANSOMWARE SIMULATOR</title>
+    <title>DOORS: A-90 Room Wanderer</title>
     <style>
         body, html {
             margin: 0; padding: 0;
@@ -17,139 +17,184 @@
         /* Экран запуска */
         #gate-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #110000; display: flex; flex-direction: column;
+            background: #0f0202; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 99999;
         }
         #gate-btn {
-            background: #ff0000; border: none; color: #000;
-            padding: 20px 60px; font-size: 1.5rem; font-weight: bold;
+            background: #ff2222; border: none; color: #000;
+            padding: 20px 60px; font-size: 1.6rem; font-weight: bold;
             cursor: pointer; box-shadow: 0 0 30px #ff0000; transition: 0.2s;
+            letter-spacing: 2px;
         }
         #gate-btn:hover { background: #fff; box-shadow: 0 0 50px #fff; }
 
-        /* Игровой экран */
-        #main-ransom {
+        /* Игровой 3D-контейнер */
+        #game-viewport {
             display: none; position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh; z-index: 10;
-            background: radial-gradient(circle, #2a0000 0%, #0a0000 100%);
+            width: 100vw; height: 100vh; perspective: 800px;
+            background: #050505; overflow: hidden;
+        }
+
+        /* 3D Окружение комнаты */
+        #room-environment {
+            position: absolute; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Стены коридора комнат */
+        .wall {
+            position: absolute; background: #1a1512;
+            border: 2px solid #0f0c0a; box-sizing: border-box;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+        }
+        .wall-left { width: 1200px; height: 100vh; transform: rotateY(90deg) translateZ(-400px) translateX(-400px); }
+        .wall-right { width: 1200px; height: 100vh; transform: rotateY(-90deg) translateZ(-400px) translateX(400px); left: calc(100vw - 400px); }
+        .floor { width: 100vw; height: 1200px; background: #110e0c; transform: rotateX(90deg) translateZ(-200px) translateY(400px); }
+
+        /* Дверь в конце комнаты */
+        #target-door {
+            position: absolute; left: 50%; top: 45%;
+            width: 180px; height: 320px; background: #3a2212;
+            transform: translate(-50%, -40%) translateZ(-500px);
+            border: 8px solid #1a0f08; cursor: pointer;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 30px #000;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.2s;
+        }
+        #target-door:hover { transform: translate(-50%, -40%) translateZ(-480px) scale(1.03); background: #4a2d1a; }
+        .door-handle { width: 15px; height: 15px; background: #cca43b; border-radius: 50%; margin-left: auto; margin-right: 20px; }
+
+        /* Игровой интерфейс HUD */
+        .game-hud {
+            position: absolute; top: 30px; left: 30px; z-index: 50;
+            color: #fff; background: rgba(0,0,0,0.7);
+            padding: 15px 30px; border: 2px solid #555; border-radius: 4px;
+            pointer-events: none;
+        }
+        .hud-line { font-size: 1.4rem; font-weight: bold; margin: 5px 0; }
+        #room-counter { color: #aaa; }
+        #wallet-counter { color: #ffd700; }
+
+        /* Золото, разбросанное в комнате */
+        .room-gold {
+            position: absolute; width: 45px; height: 45px;
+            background: radial-gradient(circle at 35% 35%, #fff 0%, #ffbb00 45%, #996e00 100%);
+            border: 2px solid #3e2b00; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 0 20px #ffbb00; z-index: 30;
+            transform: translateZ(-300px);
+        }
+
+        /* --- ИНТЕРФЕЙС БЛОКИРОВКИ РЭНСОМА (A-90) --- */
+        #ransom-attack-ui {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh; z-index: 1000;
+            background: radial-gradient(circle, #300000 0%, #0c0000 100%);
             flex-direction: column; justify-content: center; align-items: center;
         }
+        .alert-title { color: #ff2222; font-size: 3.5rem; font-weight: 900; text-shadow: 0 0 25px #ff0000; letter-spacing: 5px; }
+        .attack-stats { font-size: 2.2rem; color: #fff; margin: 20px 0; font-family: monospace; }
+        #attack-clock { color: #ff3333; font-weight: bold; }
+        #attack-score { color: #ffd700; font-weight: bold; }
 
-        /* Большое предупреждение сверху */
-        .header-alert {
-            color: #ff3333; font-size: 3rem; font-weight: 900;
-            text-shadow: 0 0 20px #ff0000; letter-spacing: 5px; margin-bottom: 5px;
-        }
-        .subheader { color: #888; font-size: 1.1rem; margin-bottom: 30px; }
-
-        /* Таймер и счетчик золота из оригинального UI */
-        .stats-box {
-            display: flex; gap: 40px; margin-bottom: 40px;
-            background: rgba(0,0,0,0.6); border: 2px solid #ff3333;
-            padding: 15px 40px; border-radius: 4px;
-        }
-        .stat-item { text-align: center; }
-        .stat-label { font-size: 0.9rem; color: #aaa; text-transform: uppercase; }
-        .stat-val { font-size: 3rem; font-weight: bold; font-family: monospace; }
-        #clock { color: #fff; }
-        #score-val { color: #ffd700; }
-
-        /* Кликабельные Монеты */
-        .game-coin {
-            position: absolute; width: 65px; height: 65px;
-            background: radial-gradient(circle at 35% 35%, #fff 0%, #ffbb00 45%, #996e00 100%);
-            border: 3px solid #3e2b00; border-radius: 50%;
+        /* Кнопочные монеты Рэнсома во время атаки */
+        .attack-coin {
+            position: absolute; width: 70px; height: 70px;
+            background: radial-gradient(circle at 35% 35%, #fff 0%, #ffcc00 45%, #aa7c11 100%);
+            border: 3px solid #4a3600; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            color: #2b1e00; font-size: 1.8rem; font-weight: 900; cursor: pointer;
-            box-shadow: 0 0 25px #ffbb00; z-index: 20;
+            color: #3a2a00; font-size: 1.8rem; font-weight: 900; cursor: pointer;
+            box-shadow: 0 0 30px #ffcc00; z-index: 1010;
         }
 
-        /* Механика А-90: ЗНАК STOP */
+        /* Знак STOP */
         #stop-sign {
-            display: none; position: fixed;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 250px; height: 250px; background-color: #ff0000;
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 260px; height: 260px; background-color: #ff0000;
             clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-            border: 6px solid #fff; z-index: 100;
+            border: 6px solid #fff; z-index: 2000;
             justify-content: center; align-items: center;
-            color: #fff; font-size: 4.5rem; font-weight: 900; letter-spacing: 2px;
-            box-shadow: 0 0 100px #ff0000;
-            animation: warning-pulse 0.1s infinite alternate;
+            color: #fff; font-size: 5rem; font-weight: 900;
+            box-shadow: 0 0 100px #ff0000; animation: sign-glow 0.1s infinite alternate;
         }
-        @keyframes warning-pulse {
-            0% { transform: translate(-50%, -50%) scale(0.95); filter: brightness(0.9); }
-            100% { transform: translate(-50%, -50%) scale(1.05); filter: brightness(1.2); }
-        }
+        @keyframes sign-glow { 0% { transform: translate(-50%, -50%) scale(0.95); } 100% { transform: translate(-50%, -50%) scale(1.05); } }
 
-        /* Имитация синего экрана смерти (BSOD) */
+        /* Имитация BSOD */
         #bsod-screen {
             display: none; position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh; background-color: #0078d7;
             color: #fff; z-index: 999999; box-sizing: border-box;
-            padding: 10% 15%; flex-direction: column; justify-content: flex-start;
+            padding: 10% 15%; flex-direction: column;
         }
         .sad-face { font-size: 9rem; font-weight: 300; margin-bottom: 25px; }
-        .bsod-title { font-size: 2.2rem; font-weight: 300; line-height: 1.4; margin-bottom: 30px; max-width: 900px; }
-        .bsod-info { display: flex; gap: 30px; align-items: center; margin-top: 20px; }
-        .qr-code { width: 130px; height: 130px; background: #fff; padding: 10px; box-sizing: border-box; }
-        .qr-inner { width: 100%; height: 100%; background: #000; }
-        .info-text { font-size: 1.1rem; opacity: 0.8; line-height: 1.6; }
+        .bsod-title { font-size: 2.2rem; font-weight: 300; margin-bottom: 30px; max-width: 900px; }
     </style>
 </head>
 <body>
 
+    <!-- 1. Экран старта -->
     <div id="gate-screen">
-        <button id="gate-btn" onclick="launchMalwareSimulation()">RUN RANSOM.EXE</button>
+        <button id="gate-btn" onclick="startGame()">ENTER THE ARCHIVES</button>
     </div>
 
-    <div id="main-ransom">
-        <div class="header-alert">SYSTEM ENCRYPTED BY A-90</div>
-        <div class="subheader">PAY THE REQUIRED FEE BY SECURING HIGH-ENERGY COINS</div>
+    <!-- 2. Игровой мир хождения по комнатам -->
+    <div id="game-viewport">
+        <div class="game-hud">
+            <div class="hud-line">ROOM: <span id="room-counter">001</span></div>
+            <div class="hud-line">GOLD: <span id="wallet-counter">0</span></div>
+        </div>
 
-        <div class="stats-box">
-            <div class="stat-item">
-                <div class="stat-label">Time Remaining</div>
-                <div class="stat-val" id="clock">10.0</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-label">Coins Collected</div>
-                <div class="stat-val" id="score-val">0 / 6</div>
+        <div id="room-environment">
+            <div class="wall wall-left"></div>
+            <div class="wall wall-right"></div>
+            <div class="floor"></div>
+            <div id="target-door" onclick="tryOpenDoor()">
+                <div class="door-handle"></div>
             </div>
         </div>
     </div>
 
+    <!-- 3. Экран атаки Рэнсома (A-90) -->
+    <div id="ransom-attack-ui">
+        <div class="alert-title">A-90 PROTOCOL: MOTION DETECTED</div>
+        <div class="attack-stats">
+            TIME: <span id="attack-clock">8.0</span> | 
+            FEE PAID: <span id="attack-score">0 / 5</span>
+        </div>
+    </div>
+
+    <!-- Знак STOP -->
     <div id="stop-sign">STOP</div>
 
+    <!-- Синий экран смерти -->
     <div id="bsod-screen">
         <div class="sad-face">:(</div>
-        <div class="bsod-title">На вашем ПК возникла проблема, и его необходимо перезагрузить. Мы лишь собираем некоторые сведения об ошибке, а затем будет автоматически выполнена перезагрузка.</div>
-        <div class="info-text">100% выполнено</div>
-        <div class="bsod-info">
-            <div class="qr-code"><div class="qr-inner"></div></div>
-            <div class="info-text">
-                При обращении в службу поддержки предоставьте следующие данные:<br>
-                Код остановки: <span style="font-weight: bold;">RANSOM_A90_MALWARE_FAIL</span><br>
-                What failed: ransomdoors.sys
-            </div>
-        </div>
+        <div class="bsod-title">На вашем ПК возникла проблема, и его необходимо перезагрузить. Мы лишь собираем некоторые сведения об ошибке.</div>
+        <div style="font-size: 1.1rem; opacity: 0.8;">Код остановки: A90_ROOM_STALKER_EVENT</div>
     </div>
 
     <script>
-        let time = 10.0;
-        let score = 0;
-        const target = 6;
-        let isStopActive = false;
-        let gameActive = false;
-        let loop, coinTimer, stopSignTimer;
+        // Игровое состояние брождения
+        let currentRoom = 1;
+        let totalGold = 0;
+        let isMovingAnimation = false;
 
+        // Состояние нападения Рэнсома
+        let attackActive = false;
+        let attackTime = 8.0;
+        let attackScore = 0;
+        const attackTarget = 5;
+        let isStopSignActive = false;
+
+        let attackLoop, stopTimer, coinSpawnInterval;
+
+        // Синтезатор lo-fi аудио частот
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function sound(freq, type, duration, vol) {
+        function playSound(freq, type, duration, vol) {
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                 gain.gain.setValueAtTime(vol, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
                 osc.connect(gain); gain.connect(audioCtx.destination);
@@ -157,99 +202,29 @@
             } catch(e){}
         }
 
-        function launchMalwareSimulation() {
+        function startGame() {
             document.getElementById('gate-screen').style.display = 'none';
-            document.getElementById('main-ransom').style.display = 'flex';
-            gameActive = true;
-
-            sound(60, 'sawtooth', 1.0, 0.6);
-
-            loop = setInterval(() => {
-                time -= 0.1;
-                if (time <= 0) {
-                    time = 0;
-                    triggerCrash();
-                }
-                document.getElementById('clock').innerText = time.toFixed(1);
-            }, 100);
-
-            spawnGold();
-            triggerStopLogic();
+            document.getElementById('game-viewport').style.display = 'block';
+            playSound(100, 'sine', 0.5, 0.4);
+            generateRoomLoot();
         }
 
-        function spawnGold() {
-            if(!gameActive) return;
-            const currentCoin = document.querySelector('.game-coin');
-            if (currentCoin) currentCoin.remove();
+        // Спавн монеток прямо внутри комнаты коридора
+        function generateRoomLoot() {
+            // Удаляем старое золото
+            const oldGolds = document.querySelectorAll('.room-gold');
+            oldGolds.forEach(g => g.remove());
 
-            const coin = document.createElement('div');
-            coin.className = 'game-coin';
-            coin.innerText = '⛃';
+            // 70% шанс спавна золота на полу текущей комнаты
+            if (Math.random() < 0.7) {
+                const gold = document.createElement('div');
+                gold.className = 'room-gold';
+                
+                // Случайная позиция на экране в зоне пола
+                gold.style.left = `${Math.random() * 40 + 30}%`;
+                gold.style.top = `${Math.random() * 20 + 65}%`;
 
-            const offset = 100;
-            const x = Math.random() * (window.innerWidth - offset * 2) + offset;
-            const y = Math.random() * (window.innerHeight - offset * 2) + offset;
-            coin.style.left = `${x}px`;
-            coin.style.top = `${y}px`;
-
-            coin.onclick = function() {
-                if (isStopActive) {
-                    triggerCrash();
-                    return;
-                }
-
-                score++;
-                document.getElementById('score-val').innerText = `${score} / ${target}`;
-                sound(900, 'sine', 0.1, 0.3);
-                coin.remove();
-
-                if (score >= target) {
-                    victory();
-                } else {
-                    spawnGold();
-                }
-            };
-
-            document.body.appendChild(coin);
-        }
-
-        function triggerStopLogic() {
-            if(!gameActive) return;
-
-            stopSignTimer = setTimeout(() => {
-                if(!gameActive) return;
-
-                isStopActive = true;
-                document.getElementById('stop-sign').style.display = 'flex';
-                sound(150, 'square', 0.3, 0.5);
-
-                setTimeout(() => {
-                    isStopActive = false;
-                    document.getElementById('stop-sign').style.display = 'none';
-                    triggerStopLogic();
-                }, 1200);
-
-            }, Math.random() * 2000 + 2000);
-        }
-
-        window.addEventListener('mousemove', () => {
-            if (gameActive && isStopActive) {
-                triggerCrash();
-            }
-        });
-
-        function victory() {
-            cleanup();
-            sound(500, 'sine', 0.4, 0.4);
-            alert('RANSOMWARE BYPASSED: ПК РАЗБЛОКИРОВАН.');
-            location.reload();
-        }
-
-        function triggerCrash() {
-            cleanup();
-            
-            sound(40, 'sawtooth', 2.0, 1.0);
-            sound(90, 'square', 1.5, 0.8);
-
-            document.getElementById('main-ransom').style.display = 'none';
-            document.getElementById('stop-sign').style.display = 'none';
+                gold.onclick = function(e) {
+                    e.stopPropagation();
+                    totalGold++;
+document.getElementById('wallet-counter').innerText = totalGold;playSound(900, 'sine', 0.08, 0.3);gold.remove();};document.getElementById('game-viewport').appendChild(gold);}}// Переход в следующую комнату при клике на дверьfunction tryOpenDoor() {if (isMovingAnimation || attackActive) return;isMovingAnimation = true;playSound(250, 'triangle', 0.2, 0.5);// Анимация приближения (зума) к двериconst env = document.getElementById('room-environment');env.style.transform = 'scale(2.5) translateZ(400px)';setTimeout(() => {// Возвращаем камеру назад, имитируя вход в новую комнатуenv.style.transition = 'none';env.style.transform = 'scale(1) translateZ(0)';setTimeout(() => {env.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';currentRoom++;document.getElementById('room-counter').innerText = String(currentRoom).padStart(3, '0');isMovingAnimation = false;generateRoomLoot();// Механика шанса атаки А-90: увеличивается с каждым залом (базовый 35%)let attackChance = 0.25 + (currentRoom * 0.03);if (Math.random() < attackChance) {triggerRansomAttack();}}, 50);}, 600);}// --- ЛОГИКА АТАКИ РЭНСОМА (A-90) ---function triggerRansomAttack() {attackActive = true;attackTime = 8.0;attackScore = 0;isStopSignActive = false;document.getElementById('attack-score').innerText = 0 / ${attackTarget};document.getElementById('ransom-attack-ui').style.display = 'flex';// Зловещий раскат звука появления А-90playSound(55, 'sawtooth', 1.2, 0.8);// Обратный отсчет таймера вымогательстваattackLoop = setInterval(() => {attackTime -= 0.1;if (attackTime <= 0) {attackTime = 0;triggerBsofCrash();}document.getElementById('attack-clock').innerText = attackTime.toFixed(1);}, 100);spawnAttackCoin();startStopSignMechanic();}function spawnAttackCoin() {if (!attackActive) return;const current = document.querySelector('.attack-coin');if (current) current.remove();const coin = document.createElement('div');coin.className = 'attack-coin';coin.innerText = '⛃';const space = 120;const x = Math.random() * (window.innerWidth - space * 2) + space;const y = Math.random() * (window.innerHeight - space * 2) + space;coin.style.left = ${x}px;coin.style.top = ${y}px;coin.onclick = function(e) {e.stopPropagation();// Нажатие во время STOP знака — проигрышif (isStopSignActive) {triggerBsofCrash();return;}attackScore++;document.getElementById('attack-score').innerText = ${attackScore} / ${attackTarget};playSound(1000, 'sine', 0.1, 0.4);coin.remove();if (attackScore >= attackTarget) {bypassRansom();} else {spawnAttackCoin();}};document.body.appendChild(coin);}// Логика цикличного появления знака STOPfunction startStopSignMechanic() {if (!attackActive) return;stopTimer = setTimeout(() => {if (!attackActive) return;isStopSignActive = true;document.getElementById('stop-sign').style.display = 'flex';playSound(140, 'square', 0.3, 0.6); // Резкий писк тревоги// Знак горит 1.1 секундыsetTimeout(() => {isStopSignActive = false;document.getElementById('stop-sign').style.display = 'none';startStopSignMechanic(); // Повторный запуск цикла}, 1100);}, Math.random() * 1500 + 1500); // Интервал появления от 1.5 до 3 сек}// Защита мыши: движение курсора во время STOP знака карается крашемwindow.addEventListener('mousemove', () => {if (attackActive && isStopSignActive) {triggerBsofCrash();}});// Успешный откупfunction bypassRansom() {endAttackCleanup();playSound(440, 'sine', 0.4, 0.5);document.getElementById('ransom-attack-ui').style.display = 'none';}// Сбой ПК и вызов Синего Экрана (BSOD)function triggerBsofCrash() {endAttackCleanup();playSound(40, 'sawtooth', 2.5, 1.0);playSound(80, 'square', 2.0, 0.8);document.getElementById('game-viewport').style.display = 'none';document.getElementById('ransom-attack-ui').style.display = 'none';document.getElementById('stop-sign').style.display = 'none';document.getElementById('bsod-screen').style.display = 'flex';setTimeout(() => {location.reload();}, 5000);}function endAttackCleanup() {attackActive = false;isStopSignActive = false;clearInterval(attackLoop);clearTimeout(stopTimer);const coin = document.querySelector('.attack-coin');if (coin) coin.remove();}
