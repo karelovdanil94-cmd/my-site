@@ -61,6 +61,7 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 30px #000;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.2s;
+            z-index: 20;
         }
         #target-door:hover { transform: translate(-50%, -40%) translateZ(-480px) scale(1.03); background: #4a2d1a; }
         .door-handle { width: 15px; height: 15px; background: #cca43b; border-radius: 50%; margin-left: auto; margin-right: 20px; }
@@ -82,7 +83,6 @@
             background: radial-gradient(circle at 35% 35%, #fff 0%, #ffbb00 45%, #996e00 100%);
             border: 2px solid #3e2b00; border-radius: 50%;
             cursor: pointer; box-shadow: 0 0 20px #ffbb00; z-index: 30;
-            transform: translateZ(-300px);
         }
 
         /* --- ИНТЕРФЕЙС БЛОКИРОВКИ РЭНСОМА (A-90) --- */
@@ -92,8 +92,8 @@
             background: radial-gradient(circle, #300000 0%, #0c0000 100%);
             flex-direction: column; justify-content: center; align-items: center;
         }
-        .alert-title { color: #ff2222; font-size: 3.5rem; font-weight: 900; text-shadow: 0 0 25px #ff0000; letter-spacing: 5px; }
-        .attack-stats { font-size: 2.2rem; color: #fff; margin: 20px 0; font-family: monospace; }
+        .alert-title { color: #ff2222; font-size: 3.5rem; font-weight: 900; text-shadow: 0 0 25px #ff0000; letter-spacing: 5px; text-align: center; }
+        .attack-stats { font-size: 2.2rem; color: #fff; margin: 20px 0; font-family: monospace; text-align: center; }
         #attack-clock { color: #ff3333; font-weight: bold; }
         #attack-score { color: #ffd700; font-weight: bold; }
 
@@ -203,13 +203,14 @@
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.start(); osc.stop(audioCtx.currentTime + duration);
             } catch(e) {
-                console.log("Браузер заблокировал аудио поток:", e);
+                console.log("Audio block error:", e);
             }
         }
 
         function startGame() {
             document.getElementById('gate-screen').style.display = 'none';
             document.getElementById('game-viewport').style.display = 'block';
+            
             playSound(100, 'sine', 0.5, 0.4);
             generateRoomLoot();
         }
