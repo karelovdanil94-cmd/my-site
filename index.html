@@ -3,214 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рэнсом (A-90) - Вымогательство</title>
+    <title>A-90 RANSOM SYSTEM v2.0</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #000;
+            background-color: #030000;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             user-select: none;
         }
 
-        /* Экран блокировки Рэнсома */
-        #ransom-screen {
+        /* Начальный экран для активации звука браузером */
+        #start-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle, #2a0000 0%, #000000 100%);
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+        #start-btn {
+            background: none;
+            border: 2px solid #ff3333;
+            color: #ff3333;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff3333;
+            transition: 0.3s;
+        }
+        #start-btn:hover {
+            background: #ff3333;
+            color: #000;
+            box-shadow: 0 0 25px #ff3333;
+        }
+
+        /* Главное окно Рэнсома */
+        #ransom-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle, #200000 0%, #050000 100%);
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #ff3333;
+            color: #ff2222;
             z-index: 9999;
             text-align: center;
         }
 
+        /* Эффект шума и помех на заднем плане (CRT Scanlines) */
+        #ransom-screen::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
         .title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-shadow: 0 0 15px #ff0000;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 0px #550000;
             margin-bottom: 5px;
-            animation: glitch 0.2s infinite alternate;
+            animation: glitch-anim 0.3s infinite alternate;
         }
 
-        /* Счетчик собранного золота */
-        .score-board {
-            font-size: 1.5rem;
-            color: #ffd700;
+        .subtitle {
+            color: #888;
+            font-size: 1rem;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px #ffd700;
+            letter-spacing: 2px;
         }
 
-        /* Таймер */
+        .score-board {
+            font-size: 1.8rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            font-weight: bold;
+        }
+
+        /* Анимированный зловещий таймер */
         .timer-box {
-            font-size: 3.5rem;
+            font-size: 4.5rem;
             color: #ffffff;
-            background-color: #111;
-            border: 3px solid #ff3333;
-            padding: 5px 25px;
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
-            margin-bottom: 30px;
+            background-color: #0a0000;
+            border: 3px solid #ff2222;
+            padding: 5px 35px;
+            border-radius: 2px;
+            box-shadow: 0 0 30px rgba(255, 34, 34, 0.4);
+            font-weight: bold;
+            animation: shake 0.5s infinite;
         }
 
-        /* Стилизация монеток Рэнсома */
+        /* Улучшенные 3D монетки Архивов */
         .coin {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            background-color: #ffd700;
-            border: 4px solid #b8860b;
+            background: radial-gradient(circle, #ffe866 0%, #d4af37 70%, #aa7c11 100%);
+            border: 3px solid #5a450c;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            color: #000;
+            color: #4a3600;
             cursor: pointer;
-            box-shadow: 0 0 20px #ffd700;
-            animation: coin-spawn 0.15s ease-out;
-            user-select: none;
+            box-shadow: 0 0 25px #ffd700, inset 0 0 8px rgba(255,255,255,0.6);
+            z-index: 5;
+            transform-origin: center;
+            animation: coin-entrance 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.1s;
+        }
+        .coin:active {
+            transform: scale(0.8);
         }
 
-        .coin:hover {
-            transform: scale(1.1);
-            background-color: #fff;
+        @keyframes coin-entrance {
+            0% { transform: scale(0) rotate(-45deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
-        @keyframes coin-spawn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        /* Экран Скримера */
+        /* Экран Скримера Хоррора */
         #screamer-screen {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #ff0000;
-            color: #fff;
-            font-size: 4rem;
-            font-weight: bold;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 10000;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10000;
-            animation: flash 0.05s infinite;
+            overflow: hidden;
         }
 
-        @keyframes flash {
-            0% { background-color: #ff0000; color: #000; }
-            50% { background-color: #000000; color: #ff0000; }
-            100% { background-color: #ff0000; color: #000; }
+        .screamer-text {
+            color: #ff0000;
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            text-align: center;
+            animation: flash-red 0.05s infinite, heavy-shake 0.1s infinite;
+        }
+
+        /* --- АНИМАЦИИ ЭФФЕКТОВ --- */
+        @keyframes glitch-anim {
+            0% { transform: skew(1deg); filter: hue-rotate(0deg); }
+            100% { transform: skew(-1deg); filter: hue-rotate(10deg); color: #ff5555; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, -1px); }
+        }
+        @keyframes heavy-shake {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            20% { transform: translate(-8px, 12px) scale(1.1); }
+            40% { transform: translate(10px, -8px) scale(0.95); }
+            60% { transform: translate(-12px, -4px) scale(1.05); }
+            80% { transform: translate(8px, 8px) scale(1); }
+        }
+        @keyframes flash-red {
+            0%, 100% { color: #ff0000; text-shadow: 0 0 50px #ff0000; }
+            50% { color: #ffffff; text-shadow: 0 0 10px #ffffff; }
         }
     </style>
 </head>
 <body>
 
-    <div id="ransom-screen">
-        <div class="title">РЭНСОМ / A-90</div>
-        <div class="score-board">СОБЕРИТЕ ЗОЛОТО: <span id="coins-collected">0</span> / 5</div>
-        <div class="timer-box" id="timer">10.0</div>
+    <!-- Шаг 1: Разрешение на звук -->
+    <div id="start-screen">
+        <button id="start-btn" onclick="initRansom()">ЗАПУСТИТЬ СИСТЕМУ А-90</button>
     </div>
 
-    <div id="screamer-screen" id="screamer">
-        YOU DIDN'T PAY!!!
+    <!-- Шаг 2: Игра -->
+    <div id="ransom-screen">
+        <div class="title">RANSOM / A-90</div>
+        <div class="subtitle">SYSTEM BREACH DETECTED — PAYMENT REQUIRED</div>
+        <div class="score-board">GOLD COLLECTED: <span id="coins-cnt">0</span> / 6</div>
+        <div class="timer-box" id="timer">8.0</div>
+    </div>
+
+    <!-- Шаг 3: Скример -->
+    <div id="screamer-screen">
+        <div class="screamer-text">YOU DIDN'T PAY!!!</div>
     </div>
 
     <script>
-        // Настройки мини-игры
-        let timeLeft = 10.0; // Время на сбор монет (в секундах)
+        let timeLeft = 8.0; // Время уменьшено до 8 секунд для хардкора
         let coinsCollected = 0;
-        const targetCoins = 5;
-        let coinInterval;
+        const targetCoins = 6; // Нужно собрать 6 монет
+        let coinInterval, countdown;
 
-        const timerElement = document.getElementById('timer');
+        // Элементы интерфейса
+        const startScreen = document.getElementById('start-screen');
         const ransomScreen = document.getElementById('ransom-screen');
         const screamerScreen = document.getElementById('screamer-screen');
-        const scoreElement = document.getElementById('coins-collected');
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('coins-cnt');
 
-        // Обратный отсчет таймера с точностью до десятых долей секунды
-        const countdown = setInterval(() => {
-            timeLeft -= 0.1;
-            if (timeLeft <= 0) {
-                timeLeft = 0;
-                clearInterval(countdown);
-                clearInterval(coinInterval);
-                triggerScreamer();
-            }
-            timerElement.innerText = timeLeft.toFixed(1);
-        }, 1000);
+        // Звуковые ресурсы (Оригинальные звуки Roblox)
+        const sndBgm = new Audio('https://google.com'); // Фоновый гул
+        const sndTick = new Audio('https://google.com'); // Тиканье таймера
+        const sndCoin = new Audio('https://google.com'); // Сбор монет
+        const sndScreamer = new Audio('https://hamsterrepublic.com'); // Скример при проигрыше
 
-        // Функция генерации монеты в случайном месте экрана
+        sndBgm.loop = true;
+        sndBgm.volume = 0.4;
+        sndTick.volume = 0.6;
+
+        function initRansom() {
+            startScreen.style.display = 'none';
+            ransomScreen.style.display = 'flex';
+            
+            // Запускаем атмосферный звук
+            sndBgm.play().catch(() => {});
+
+            // Старт таймера
+            countdown = setInterval(() => {
+                timeLeft -= 0.1;
+                
+                if (timeLeft <= 3.0) {
+                    timerElement.style.color = '#ff0000';
+                    sndTick.play().catch(() => {}); // Начинает пищать на последних секундах
+                }
+
+                if (timeLeft <= 0) {
+                    timeLeft = 0;
+                    endGame(false);
+                }
+                timerElement.innerText = timeLeft.toFixed(1);
+            }, 1000 / 10);
+
+            // Старт появления золота
+            spawnCoin();
+            coinInterval = setInterval(spawnCoin, 950); // Монеты появляются быстрее
+        }
+
         function spawnCoin() {
-            // Удаляем старую монету, если она еще осталась на экране
             const oldCoin = document.querySelector('.coin');
             if (oldCoin) oldCoin.remove();
 
             const coin = document.createElement('div');
             coin.className = 'coin';
-            coin.innerText = '⛃'; // Символ монетки
+            coin.innerText = '$';
 
-            // Случайные координаты (с отступами, чтобы не вылезали за края)
-            const padding = 80;
+            // Рандомизация размера монеты (от 50px до 75px)
+            const size = Math.floor(Math.random() * 25) + 50;
+            coin.style.width = `${size}px`;
+            coin.style.height = `${size}px`;
+            coin.style.fontSize = `${size * 0.45}px`;
+
+            // Координаты спавна
+            const padding = 90;
             const x = Math.random() * (window.innerWidth - padding * 2) + padding;
             const y = Math.random() * (window.innerHeight - padding * 2) + padding;
-
             coin.style.left = `${x}px`;
             coin.style.top = `${y}px`;
 
-            // Обработка клика по монете
             coin.onclick = function() {
                 coinsCollected++;
                 scoreElement.innerText = coinsCollected;
+                
+                // Звук успешного клика по золоту
+                sndCoin.currentTime = 0;
+                sndCoin.play().catch(() => {});
+                
                 coin.remove();
 
                 if (coinsCollected >= targetCoins) {
-                    victory();
-                } else {
-                    // Сразу спавним следующую при клике
-                    spawnCoin();
-                }
-            };
-
-            ransomScreen.appendChild(coin);
-        }
-
-        // Запускаем постоянный спавн монет (раз в 1.2 секунды, если игрок тормозит)
-        spawnCoin();
-        coinInterval = setInterval(spawnCoin, 1200);
-
-        // Успешный откуп
-        function victory() {
-            clearInterval(countdown);
-            clearInterval(coinInterval);
-            const activeCoin = document.querySelector('.coin');
-            if (activeCoin) activeCoin.remove();
-            
-            ransomScreen.style.display = 'none';
-            alert('Вы откупились от Рэнсома. Золото успешно собрано.');
-        }
-
-        // Проигрыш и скример (YOU DIDN'T PAY!)
-        function triggerScreamer() {
-            ransomScreen.style.display = 'none';
-            screamerScreen.style.display = 'flex';
-            
-            setTimeout(() => {
-                location.reload(); // Перезапуск страницы
-            }, 3500);
-        }
-    </script>
-</body>
-</html>
+(true);} else {spawnCoin();}};ransomScreen.appendChild(coin);}function endGame(isVictory) {clearInterval(countdown);clearInterval(coinInterval);sndBgm.pause();const activeCoin = document.querySelector('.coin');if (activeCoin) activeCoin.remove();if (isVictory) {ransomScreen.style.display = 'none';alert('ACCESS GRANTED. RANSOM BYPASS SUCCESSFUL.');location.reload();} else {// Включаем скримерransomScreen.style.display = 'none';screamerScreen.style.display = 'flex';sndScreamer.play().catch(() => {});// Авто-перезагрузка через 4 секунды тряскиsetTimeout(() => {location.reload();}, 4000);}}
