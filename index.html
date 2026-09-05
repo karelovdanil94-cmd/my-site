@@ -174,24 +174,27 @@
     </div>
 
     <script>
-        // Игровое состояние брождения
         let currentRoom = 1;
         let totalGold = 0;
         let isMovingAnimation = false;
 
-        // Состояние нападения Рэнсома
         let attackActive = false;
         let attackTime = 8.0;
         let attackScore = 0;
         const attackTarget = 5;
         let isStopSignActive = false;
 
-        let attackLoop, stopTimer, coinSpawnInterval;
+        let attackLoop, stopTimer;
+        let audioCtx = null;
 
-        // Синтезатор lo-fi аудио частот
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(freq, type, duration, vol) {
             try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
@@ -199,7 +202,9 @@
                 gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.start(); osc.stop(audioCtx.currentTime + duration);
-            } catch(e){}
+            } catch(e) {
+                console.log("Браузер заблокировал аудио поток:", e);
+            }
         }
 
         function startGame() {
@@ -209,22 +214,171 @@
             generateRoomLoot();
         }
 
-        // Спавн монеток прямо внутри комнаты коридора
         function generateRoomLoot() {
-            // Удаляем старое золото
             const oldGolds = document.querySelectorAll('.room-gold');
             oldGolds.forEach(g => g.remove());
 
-            // 70% шанс спавна золота на полу текущей комнаты
             if (Math.random() < 0.7) {
                 const gold = document.createElement('div');
                 gold.className = 'room-gold';
                 
-                // Случайная позиция на экране в зоне пола
                 gold.style.left = `${Math.random() * 40 + 30}%`;
                 gold.style.top = `${Math.random() * 20 + 65}%`;
 
                 gold.onclick = function(e) {
                     e.stopPropagation();
                     totalGold++;
-document.getElementById('wallet-counter').innerText = totalGold;playSound(900, 'sine', 0.08, 0.3);gold.remove();};document.getElementById('game-viewport').appendChild(gold);}}// Переход в следующую комнату при клике на дверьfunction tryOpenDoor() {if (isMovingAnimation || attackActive) return;isMovingAnimation = true;playSound(250, 'triangle', 0.2, 0.5);// Анимация приближения (зума) к двериconst env = document.getElementById('room-environment');env.style.transform = 'scale(2.5) translateZ(400px)';setTimeout(() => {// Возвращаем камеру назад, имитируя вход в новую комнатуenv.style.transition = 'none';env.style.transform = 'scale(1) translateZ(0)';setTimeout(() => {env.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';currentRoom++;document.getElementById('room-counter').innerText = String(currentRoom).padStart(3, '0');isMovingAnimation = false;generateRoomLoot();// Механика шанса атаки А-90: увеличивается с каждым залом (базовый 35%)let attackChance = 0.25 + (currentRoom * 0.03);if (Math.random() < attackChance) {triggerRansomAttack();}}, 50);}, 600);}// --- ЛОГИКА АТАКИ РЭНСОМА (A-90) ---function triggerRansomAttack() {attackActive = true;attackTime = 8.0;attackScore = 0;isStopSignActive = false;document.getElementById('attack-score').innerText = 0 / ${attackTarget};document.getElementById('ransom-attack-ui').style.display = 'flex';// Зловещий раскат звука появления А-90playSound(55, 'sawtooth', 1.2, 0.8);// Обратный отсчет таймера вымогательстваattackLoop = setInterval(() => {attackTime -= 0.1;if (attackTime <= 0) {attackTime = 0;triggerBsofCrash();}document.getElementById('attack-clock').innerText = attackTime.toFixed(1);}, 100);spawnAttackCoin();startStopSignMechanic();}function spawnAttackCoin() {if (!attackActive) return;const current = document.querySelector('.attack-coin');if (current) current.remove();const coin = document.createElement('div');coin.className = 'attack-coin';coin.innerText = '⛃';const space = 120;const x = Math.random() * (window.innerWidth - space * 2) + space;const y = Math.random() * (window.innerHeight - space * 2) + space;coin.style.left = ${x}px;coin.style.top = ${y}px;coin.onclick = function(e) {e.stopPropagation();// Нажатие во время STOP знака — проигрышif (isStopSignActive) {triggerBsofCrash();return;}attackScore++;document.getElementById('attack-score').innerText = ${attackScore} / ${attackTarget};playSound(1000, 'sine', 0.1, 0.4);coin.remove();if (attackScore >= attackTarget) {bypassRansom();} else {spawnAttackCoin();}};document.body.appendChild(coin);}// Логика цикличного появления знака STOPfunction startStopSignMechanic() {if (!attackActive) return;stopTimer = setTimeout(() => {if (!attackActive) return;isStopSignActive = true;document.getElementById('stop-sign').style.display = 'flex';playSound(140, 'square', 0.3, 0.6); // Резкий писк тревоги// Знак горит 1.1 секундыsetTimeout(() => {isStopSignActive = false;document.getElementById('stop-sign').style.display = 'none';startStopSignMechanic(); // Повторный запуск цикла}, 1100);}, Math.random() * 1500 + 1500); // Интервал появления от 1.5 до 3 сек}// Защита мыши: движение курсора во время STOP знака карается крашемwindow.addEventListener('mousemove', () => {if (attackActive && isStopSignActive) {triggerBsofCrash();}});// Успешный откупfunction bypassRansom() {endAttackCleanup();playSound(440, 'sine', 0.4, 0.5);document.getElementById('ransom-attack-ui').style.display = 'none';}// Сбой ПК и вызов Синего Экрана (BSOD)function triggerBsofCrash() {endAttackCleanup();playSound(40, 'sawtooth', 2.5, 1.0);playSound(80, 'square', 2.0, 0.8);document.getElementById('game-viewport').style.display = 'none';document.getElementById('ransom-attack-ui').style.display = 'none';document.getElementById('stop-sign').style.display = 'none';document.getElementById('bsod-screen').style.display = 'flex';setTimeout(() => {location.reload();}, 5000);}function endAttackCleanup() {attackActive = false;isStopSignActive = false;clearInterval(attackLoop);clearTimeout(stopTimer);const coin = document.querySelector('.attack-coin');if (coin) coin.remove();}
+                    document.getElementById('wallet-counter').innerText = totalGold;
+                    playSound(900, 'sine', 0.08, 0.3);
+                    gold.remove();
+                };
+                document.getElementById('game-viewport').appendChild(gold);
+            }
+        }
+
+        function tryOpenDoor() {
+            if (isMovingAnimation || attackActive) return;
+            isMovingAnimation = true;
+            playSound(250, 'triangle', 0.2, 0.5);
+
+            const env = document.getElementById('room-environment');
+            env.style.transform = 'scale(2.5) translateZ(400px)';
+
+            setTimeout(() => {
+                env.style.transition = 'none';
+                env.style.transform = 'scale(1) translateZ(0)';
+                
+                setTimeout(() => {
+                    env.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+                    currentRoom++;
+                    document.getElementById('room-counter').innerText = String(currentRoom).padStart(3, '0');
+                    isMovingAnimation = false;
+
+                    generateRoomLoot();
+                    
+                    let attackChance = 0.25 + (currentRoom * 0.03);
+                    if (Math.random() < attackChance) {
+                        triggerRansomAttack();
+                    }
+                }, 50);
+            }, 600);
+        }
+
+        function triggerRansomAttack() {
+            attackActive = true;
+            attackTime = 8.0;
+            attackScore = 0;
+            isStopSignActive = false;
+            
+            document.getElementById('attack-score').innerText = `0 / ${attackTarget}`;
+            document.getElementById('ransom-attack-ui').style.display = 'flex';
+            
+            playSound(55, 'sawtooth', 1.2, 0.8);
+
+            attackLoop = setInterval(() => {
+                attackTime -= 0.1;
+                if (attackTime <= 0) {
+                    attackTime = 0;
+                    triggerBsofCrash();
+                }
+                document.getElementById('attack-clock').innerText = attackTime.toFixed(1);
+            }, 100);
+
+            spawnAttackCoin();
+            startStopSignMechanic();
+        }
+
+        function spawnAttackCoin() {
+            if (!attackActive) return;
+            const current = document.querySelector('.attack-coin');
+            if (current) current.remove();
+
+            const coin = document.createElement('div');
+            coin.className = 'attack-coin';
+            coin.innerText = '⛃';
+
+            const space = 120;
+            const x = Math.random() * (window.innerWidth - space * 2) + space;
+            const y = Math.random() * (window.innerHeight - space * 2) + space;
+            coin.style.left = `${x}px`;
+            coin.style.top = `${y}px`;
+
+            coin.onclick = function(e) {
+                e.stopPropagation();
+                if (isStopSignActive) {
+                    triggerBsofCrash();
+                    return;
+                }
+
+                attackScore++;
+                document.getElementById('attack-score').innerText = `${attackScore} / ${attackTarget}`;
+                playSound(1000, 'sine', 0.1, 0.4);
+                coin.remove();
+
+                if (attackScore >= attackTarget) {
+                    bypassRansom();
+                } else {
+                    spawnAttackCoin();
+                }
+            };
+
+            document.body.appendChild(coin);
+        }
+
+        function startStopSignMechanic() {
+            if (!attackActive) return;
+
+            stopTimer = setTimeout(() => {
+                if (!attackActive) return;
+
+                isStopSignActive = true;
+                document.getElementById('stop-sign').style.display = 'flex';
+                playSound(140, 'square', 0.3, 0.6);
+
+                setTimeout(() => {
+                    isStopSignActive = false;
+                    document.getElementById('stop-sign').style.display = 'none';
+                    startStopSignMechanic();
+                }, 1100);
+
+            }, Math.random() * 1500 + 1500);
+        }
+
+        window.addEventListener('mousemove', () => {
+            if (attackActive && isStopSignActive) {
+                triggerBsofCrash();
+            }
+        });
+
+        function bypassRansom() {
+            endAttackCleanup();
+            playSound(440, 'sine', 0.4, 0.5);
+            document.getElementById('ransom-attack-ui').style.display = 'none';
+        }
+
+        function triggerBsofCrash() {
+            endAttackCleanup();
+            playSound(40, 'sawtooth', 2.5, 1.0);
+            playSound(80, 'square', 2.0, 0.8);
+
+            document.getElementById('game-viewport').style.display = 'none';
+            document.getElementById('ransom-attack-ui').style.display = 'none';
+            document.getElementById('stop-sign').style.display = 'none';
+            document.getElementById('bsod-screen').style.display = 'flex';
+
+            setTimeout(() => {
+                location.reload();
+            }, 5000);
+        }
+
+        function endAttackCleanup() {
+            attackActive = false;
+            isStopSignActive = false;
+            clearInterval(attackLoop);
+            clearTimeout(stopTimer);
+            const coin = document.querySelector('.attack-coin');
+            if (coin) coin.remove();
+        }
+    </script>
+</body>
+</html>
