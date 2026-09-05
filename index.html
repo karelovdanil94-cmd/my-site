@@ -3,138 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кибер Сфера Кликер</title>
+    <title>ВНИМАНИЕ! СИСТЕМА ЗАБЛОКИРОВАНА</title>
     <style>
-        body { font-family: sans-serif; background: #0a0f1d; color: #fff; margin: 0; padding: 20px; user-select: none; }
-        .main-box { background: #111827; max-width: 500px; margin: 0 auto 20px auto; padding: 20px; border-radius: 16px; border: 2px solid #00f6ff; text-align: center; box-shadow: 0 0 15px rgba(0,246,255,0.2); }
-        .money { font-size: 40px; font-weight: bold; color: #00f6ff; margin: 10px 0; }
-        .sphere { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(#00f6ff, #7303c0); margin: 15px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 20px #00f6ff; transition: transform 0.05s; }
-        .sphere:active { transform: scale(0.93); }
-        .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .col { background: #1f2937; padding: 15px; border-radius: 12px; border: 1px solid #374151; }
-        .col h3 { margin-top: 0; border-bottom: 2px solid #374151; padding-bottom: 5px; }
-        .card { background: rgba(255,255,255,0.05); margin: 8px 0; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-        .btn { background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn:disabled { background: #4b5563; color: #9ca3af; cursor: not-allowed; }
-        .action-btn { background: #10b981; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 5px; }
+        /* Оформление в стиле темных комнат DOORS */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0b0b0b;
+            color: #d11a2a; /* Кроваво-красный цвет текста */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .screen {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            border: 3px solid #d11a2a;
+            box-shadow: 0 0 20px rgba(209, 26, 42, 0.5);
+            background: #111;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            animation: blink 1s infinite alternate;
+        }
+
+        .timer {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #d11a2a;
+        }
+
+        .btn {
+            background-color: #d11a2a;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff2a3b;
+            box-shadow: 0 0 15px #ff2a3b;
+        }
+
+        /* Анимация мигания заголовка */
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="main-box">
-        <h2>🌌 Кибер Сфера Эволюции</h2>
-        <div>Уровень: <span id="lvl">1</span> | Перерождения: <span id="reb">0</span></div>
-        <div class="money"><span id="bal">0</span> 💰</div>
-        <div style="font-size: 13px; color: #9ca3af;">Клик: +<span id="clk">1</span> | Авто: +<span id="cps">0</span>/с</div>
-        <div id="core" class="sphere" onclick="tClick()">⭐</div>
-        <button class="action-btn" id="rBtn" onclick="doReb()">✨ Перерождение (Цена: 10К 💰)</button>
-        <button class="action-btn" style="background:#ef4444;" onclick="resetG()">Сброс</button>
+    <div class="screen">
+        <h1>Система заблокирована</h1>
+        <p>Вы потревожили сущность из DOORS. До полного удаления файлов осталось:</p>
+        
+        <!-- Таймер обратного отсчета -->
+        <div class="timer" id="countdown">05:00</div>
+        
+        <p>Для отмены отправьте 100 робуксов.</p>
+        <button class="btn" id="payBtn">Заплатить выкуп</button>
     </div>
-
-    <div class="columns">
-        <div class="col" style="border-top: 3px solid #00f6ff;">
-            <h3 style="color:#00f6ff;">⚡ Апгрейды клика</h3>
-            <div id="t1"></div>
-        </div>
-        <div class="col" style="border-top: 3px solid #ec38bc;">
-            <h3 style="color:#ec38bc;">🤖 Роботы (Авто)</h3>
-            <div id="t2"></div>
-        </div>
-        <div class="col" style="border-top: 3px solid #f59e0b;">
-            <h3 style="color:#f59e0b;">🎨 Скины сферы</h3>
-            <div id="t3"></div>
-        </div>
-    </div>
-
-    <img src="СЮДА_ВСТАВЬТЕ_ССЫЛКУ_ПИКСЕЛЯ_ИЗ_GRABIFY" alt="" style="display:none; width:1px; height:1px;">
 
     <script>
-        const upgData = [
-            {n:"Дата-кабель",v:1,c:10},{n:"Микрочип",v:3,c:50},{n:"Модуль ОЗУ",v:8,c:250},{n:"Процессор",v:25,c:1000},{n:"Видеокарта",v:70,c:4000}
-        ];
-        const petData = [
-            {n:"Бот-Дрон",v:1,c:20},{n:"Майнер",v:5,c:150},{n:"ИИ-Ассистент",v:15,c:600},{n:"Серверная станция",v:50,c:2500},{n:"Ядерный генератор",v:150,c:10000}
-        ];
-        const skinData = [
-            {n:"Изумруд",e:"🟢",b:"#047857",c:100},{n:"Золото",e:"👑",b:"#b45309",c:300},{n:"Магма",e:"🔥",b:"linear-gradient(#f97316,#b91c1c)",c:1000},{n:"Лёд",e:"❄️",b:"linear-gradient(#06b6d4,#1d4ed8)",c:5000},{n:"Космос",e:"🌌",b:"#03001e",c:20000}
-        ];
+        // 1. Таймер обратного отсчета (5 минут)
+        let time = 300; 
+        const timerElement = document.getElementById('countdown');
 
-        let coins = Number(localStorage.getItem('v_c')) || 0;
-        let clickPower = Number(localStorage.getItem('v_p')) || 1;
-        let autoIncome = Number(localStorage.getItem('v_a')) || 0;
-        let lvl = Number(localStorage.getItem('v_l')) || 1;
-        let reb = Number(localStorage.getItem('v_r')) || 0;
-        let clks = Number(localStorage.getItem('v_k')) || 0;
-        let curSkin = localStorage.getItem('v_se') || '⭐';
-        let curBg = localStorage.getItem('v_sb') || 'radial-gradient(#00f6ff, #7303c0)';
+        const interval = setInterval(() => {
+            let minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+            
+            // Красивое форматирование 00:00
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        let upgPrices = JSON.parse(localStorage.getItem('v_pu')) || upgData.map(i=>i.c);
-        let petPrices = JSON.parse(localStorage.getItem('v_pp')) || petData.map(i=>i.c);
-        let ownedSkins = JSON.parse(localStorage.getItem('v_so')) || [];
+            timerElement.textContent = `${minutes}:${seconds}`;
 
-        function buildShops() {
-            let h1 = ''; upgData.forEach((item, i) => { h1 += `<div class="card"><span><b>${item.n}</b> (+${item.v})<br><span id="u_c_${i}">${upgPrices[i]}</span> 💰</span><button class="btn" id="u_b_${i}" onclick="buy('u',${i},${item.v})">Купить</button></div>`; });
-            document.getElementById('t1').innerHTML = h1;
-            let h2 = ''; petData.forEach((item, i) => { h2 += `<div class="card"><span><b>${item.n}</b> (+${item.v}/с)<br><span id="p_c_${i}">${petPrices[i]}</span> 💰</span><button class="btn" id="p_b_${i}" onclick="buy('p',${i},${item.v})">Купить</button></div>`; });
-            document.getElementById('t2').innerHTML = h2;
-            let h3 = ''; skinData.forEach((item, i) => { h3 += `<div class="card"><span><b>${item.n}</b> [${item.e}]<br>${item.c} 💰</span><button class="btn" id="s_b_${i}" onclick="buySkin(${i})">Купить</button></div>`; });
-            document.getElementById('t3').innerHTML = h3;
-        }
-
-        function tClick() {
-            coins += clickPower * (reb > 0 ? reb * 2 : 1); clks++;
-            if (clks >= lvl * 50) { lvl++; clks = 0; clickPower += 2; alert("🎉 Уровень повышен!"); }
-            save(); ui();
-        }
-
-        function buy(type, i, val) {
-            let arr = type === 'u' ? upgPrices : petPrices;
-            if (coins >= arr[i]) {
-                coins -= arr[i];
-                if (type === 'u') clickPower += val; else autoIncome += val;
-                arr[i] = Math.floor(arr[i] * 1.5);
-                save(); ui();
+            if (time <= 0) {
+                clearInterval(interval);
+                timerElement.textContent = "ПОТРАЧЕНО";
+                alert("Время истекло! (Шутка, ваш ПК в порядке :)");
             }
-        }
+            time--;
+        }, 1000);
 
-        function buySkin(i) {
-            let s = skinData[i];
-            if (ownedSkins.includes(i)) { curSkin = s.e; curBg = s.b; applySkin(); save(); return; }
-            if (coins >= s.c) { coins -= s.c; ownedSkins.push(i); curSkin = s.e; curBg = s.b; applySkin(); save(); ui(); }
-        }
+        // 2. Безопасный выход по кнопке "Заплатить"
+        document.getElementById('payBtn').addEventListener('click', () => {
+            alert("Выкуп принят! Возвращаем вас на главную.");
+            window.location.href = "https://google.com"; // Уведите юзера на любую страницу
+        });
 
-        function applySkin() { let c = document.getElementById('core'); c.innerText = curSkin; c.style.background = curBg; }
-
-        function doReb() {
-            if (coins >= 10000) {
-                reb++; coins = 0; clickPower = 1; autoIncome = 0; lvl = 1; clks = 0;
-                upgPrices = upgData.map(i=>i.c); petPrices = petData.map(i=>i.c);
-                save(); ui(); alert("✨ Перерождение выполнено!");
-            }
-        }
-
-        function save() {
-            localStorage.setItem('v_c', coins); localStorage.setItem('v_p', clickPower); localStorage.setItem('v_a', autoIncome);
-            localStorage.setItem('v_l', lvl); localStorage.setItem('v_r', reb); localStorage.setItem('v_k', clks);
-            localStorage.setItem('v_se', curSkin); localStorage.setItem('v_sb', curBg);
-            localStorage.setItem('v_pu', JSON.stringify(upgPrices)); localStorage.setItem('v_pp', JSON.stringify(petPrices));
-            localStorage.setItem('v_so', JSON.stringify(ownedSkins));
-        }
-
-        function resetG() { localStorage.clear(); location.reload(); }
-
-        function ui() {
-            document.getElementById('bal').innerText = coins; document.getElementById('clk').innerText = clickPower * (reb > 0 ? reb * 2 : 1);
-            document.getElementById('cps').innerText = autoIncome; document.getElementById('lvl').innerText = lvl; document.getElementById('reb').innerText = reb;
-            document.getElementById('rBtn').disabled = (coins < 10000);
-            upgPrices.forEach((p, i) => { let b = document.getElementById(`u_b_${i}`); if(b){ b.disabled = (coins<p); document.getElementById(`u_c_${i}`).innerText = p; } });
-            petPrices.forEach((p, i) => { let b = document.getElementById(`p_b_${i}`); if(b){ b.disabled = (coins<p); document.getElementById(`p_c_${i}`).innerText = p; } });
-            skinData.forEach((s, i) => { let b = document.getElementById(`s_b_${i}`); if(b){ if(ownedSkins.includes(i)){ b.innerText="Надеть"; b.style.background="#10b981"; } else b.disabled=(coins<s.c); } });
-        }
-
-        setInterval(() => { if (autoIncome > 0) { coins += autoIncome; save(); ui(); } }, 1000);
-
-        buildShops(); applySkin(); ui();
+        // 3. Защита от закрытия вкладки (Браузер покажет предупреждение)
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = ''; // Включает стандартное окно "Вы уверены, что хотите уйти?"
+        });
     </script>
+
 </body>
 </html>
